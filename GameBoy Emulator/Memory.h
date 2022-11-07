@@ -34,8 +34,13 @@ private:
 	//FF80 - FFFE
 	uint8_t HRAM[0x007F]; // High RAM
 
-	//FFFF - FFFF
+	// REGISTERS
+
+	//FFFF
 	uint8_t IE; // Interupt Enable Register
+
+	//FF44
+	uint8_t LY;
 
 public:
 	uint8_t read(uint16_t address);

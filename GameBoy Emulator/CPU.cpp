@@ -29,13 +29,12 @@ void CPU::stepCPU() {
 	int xyzzy = 0;
 	while (true) {
 		printf("\n\nOPCODE: 0x%X\n\n", (memory.read(PC)));
-		printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X ", PC, SP, AF, BC, DE, HL);
-		printf(" 0xFF44 = %X \n", memory.read(0xFF44));
+		printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X \n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
+		//printf(" 0xFF44 = %X \n", memory.read(0xFF44));
 		
 		if (A == 0x94) {
 
 		}
-
 		// Get the Opcode from the Opcode mapb
 		(this->*Opcodes[memory.read(PC)])();
 
@@ -46,6 +45,9 @@ void CPU::stepCPU() {
 		--xyzzy;
 		//this->*(opcode_map.find(0x00)->second)(this);
 		++PC;
+
+		//temporary fix to LY register because gfx aren't setup yet
+		memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
 	}
 }
 

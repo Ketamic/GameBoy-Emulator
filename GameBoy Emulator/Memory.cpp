@@ -32,7 +32,15 @@ uint8_t Memory::read(uint16_t address) {
 		return 0x00/*UNUSEABLE[(0xFEFF - address)]*/; // This shoudln't ever happen but its just here for consistency
 	} 
 	else if (address <= 0xFF7F) {
-		return IO[0xFF7F - address];
+		if (address <= 0xFF43) {
+			return IO[(0xFF7F - address)];
+		}
+		else if (address == 0xFF44) {
+			return LY;
+		}
+		else {
+			return IO[(0xFF7F - address)];
+		}
 	}
 	else if (address <= 0xFFFE) {
 		return HRAM[0xFFFE - address];
@@ -71,7 +79,15 @@ void Memory::write(uint16_t address, uint8_t value) {
 		return; // This shoudln't ever happen but its just here for consistency -- writing to it does nothing
 	}
 	else if (address <= 0xFF7F) {
-		IO[0xFF7F - address] = value;
+		if (address <= 0xFF43) {
+			IO[(0xFF7F - address)] = value;
+		}
+		else if (address == 0xFF44) {
+			LY = value;
+		}
+		else {
+			IO[(0xFF7F - address)] = value;
+		}
 	}
 	else if (address <= 0xFFFE) {
 		HRAM[0xFFFE - address] = value;

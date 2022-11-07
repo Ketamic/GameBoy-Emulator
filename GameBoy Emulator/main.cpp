@@ -20,6 +20,10 @@ void printBits(size_t const size, void const* const ptr)
 }
 
 int main(int argc, char* argv[]) {
+	
+	//std::uint16_t comb = (0xFF << 8| 0x44);
+	//printf("0x%X", comb);
+
 	/*
 	uint16_t a = 0b1111111100000000;
 	uint8_t msb = (a >> 8);

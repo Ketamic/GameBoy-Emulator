@@ -91,6 +91,8 @@ private:
 	void op_0xE0();
 	void op_0xF0();
 
+	void op_0x36();
+
 	void op_0x0E();
 	void op_0x3E();
 	//JR

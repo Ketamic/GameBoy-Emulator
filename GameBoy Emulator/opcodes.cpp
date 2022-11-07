@@ -43,12 +43,18 @@ void CPU::op_0x32() {
 
 // LD, (a8) A - Store the contents of register A in the internal RAM, port register, or mode register at the address in the range 0xFF00-0xFFFF specified by the 8-bit immediate operand a8.
 void CPU::op_0xE0() {
-	memory.write(0xFF | GetImmediateOperand(), A);
+	memory.write(0xFF << 8 | (GetImmediateOperand() & 0xFF), A);
 }
 
 // LD, A (a8) - Load into register A the contents of the internal RAM, port register, or mode register at the address in the range 0xFF00-0xFFFF specified by the 8-bit immediate operand a8.
 void CPU::op_0xF0() {
-	A = memory.read(0xFF | GetImmediateOperand());
+	//printf("\n\n\n 0x%X \n\n\n", (0xFF << 8 | GetImmediateOperand())); PC -= 2;
+	A = memory.read(0xFF << 8 | ( GetImmediateOperand() & 0xFF));
+}
+
+//LD (HL), d8
+void CPU::op_0x36() {
+	memory.write(HL, GetImmediateOperand());
 }
 
 //LD, C - Load the 8-bit immediate operand d8 into register C.
