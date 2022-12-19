@@ -90,11 +90,24 @@ private:
 
 	void op_0xE0();
 	void op_0xF0();
+	void op_0xFA();
+	void op_0x2A();
+	void op_0xE2();
+
+	void op_0xEA();
+
+	void op_0x31();
 
 	void op_0x36();
 
 	void op_0x0E();
 	void op_0x3E();
+
+	void op_0x40();
+	void op_0x50();
+	void op_0x60();
+	void op_0x70();
+
 	//JR
 	void op_0x20();
 
@@ -139,6 +152,9 @@ private:
 	void op_0xAD();
 	void op_0xAE();
 	void op_0xAF();
+
+	// CALL
+	void op_0xCD();
 
 	// RST
 	void op_0xFF(); // RST 7

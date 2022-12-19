@@ -36,6 +36,8 @@ void CPU::op_0x21() {
 	HL = GetImmediateOperands();
 }
 
+
+// LD (HL-), A
 void CPU::op_0x32() {
 	memory.write(HL, A);
 	--HL;
@@ -50,6 +52,32 @@ void CPU::op_0xE0() {
 void CPU::op_0xF0() {
 	//printf("\n\n\n 0x%X \n\n\n", (0xFF << 8 | GetImmediateOperand())); PC -= 2;
 	A = memory.read(0xFF << 8 | ( GetImmediateOperand() & 0xFF));
+}
+
+// LD A, (a16)
+void CPU::op_0xFA() {
+	A = memory.read(GetImmediateOperands());
+}
+
+// LD A, (HL+)
+void CPU::op_0x2A() {
+	A = memory.read(HL);
+	++HL;
+}
+
+// LD (C), A
+void CPU::op_0xE2() {
+	memory.write((0xFF << 8 | C & 0xFF), A);
+}
+
+// LD (a16), A - Store the contents of register A in the internal RAM or register specified by the 16-bit immediate operand a16.
+void CPU::op_0xEA() {
+	memory.write(GetImmediateOperands(), A);
+}
+
+//LD SP, d16
+void CPU::op_0x31() {
+	SP = GetImmediateOperands();
 }
 
 //LD (HL), d8
@@ -70,6 +98,27 @@ void CPU::op_0x3E() {
 void CPU::op_0x06() {
 	B = GetImmediateOperand();
 }
+
+//LD B, B - Load the contents of register B into register B.
+void CPU::op_0x40() {
+	B = B;
+}
+
+//LD D, B - Load the contents of register B into register B.
+void CPU::op_0x50() {
+	D = B;
+}
+
+//LD H, B - Load the contents of register B into register B.
+void CPU::op_0x60() {
+	H = B;
+}
+
+//LD B, B - Load the contents of register B into register B.
+void CPU::op_0x70() {
+	memory.write(HL, B);
+}
+
 
 // JR
 
@@ -223,6 +272,17 @@ void CPU::op_0xF3() {
 	INTERUPT_MASTER_ENABLE = 0;
 }
 
+// CALL
+
+// CALL a16
+void CPU::op_0xCD() {
+	uint16_t imm = GetImmediateOperands();
+	--SP;	
+	memory.write(--SP, PC >> 8);
+	memory.write(SP, PC & 0xFF);
+	PC = imm - 1; // For some reason one is being added onto the imm, i have zero idea why as of right now
+}
+
 // RST - Unconditional function call to the absolute fixed address defined by the opcode
 
 void CPU::op_0xFF() {
@@ -284,8 +344,22 @@ void CPU::init_opcodes() {
 
 	Opcodes[0xE0] = &CPU::op_0xE0;
 	Opcodes[0xF0] = &CPU::op_0xF0;
+	Opcodes[0xFA] = &CPU::op_0xFA;
+	Opcodes[0x2A] = &CPU::op_0x2A;
+	Opcodes[0xE2] = &CPU::op_0xE2;
+
+	Opcodes[0xEA] = &CPU::op_0xEA;
+
+	Opcodes[0x31] = &CPU::op_0x31;
+
+	Opcodes[0x36] = &CPU::op_0x36;
 
 	Opcodes[0xC3] = &CPU::op_0xC3;
+
+	Opcodes[0x40] = &CPU::op_0x40;
+	Opcodes[0x50] = &CPU::op_0x50;
+	Opcodes[0x60] = &CPU::op_0x60;
+	Opcodes[0x70] = &CPU::op_0x70;
 
 	// JR
 	Opcodes[0x20] = &CPU::op_0x20;
@@ -321,6 +395,8 @@ void CPU::init_opcodes() {
 	Opcodes[0xAF] = &CPU::op_0xAF;
 
 	Opcodes[0xF3] = &CPU::op_0xF3;
+
+	Opcodes[0xCD] = &CPU::op_0xCD;
 
 	Opcodes[0xFF] = &CPU::op_0xFF;
 
