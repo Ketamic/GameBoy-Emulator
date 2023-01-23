@@ -112,7 +112,6 @@ private:
 	void op_0x20();
 
 	void op_0x03();
-	void op_0x04();
 	void op_0x06();
 	void op_0x07();
 	void op_0x08();
@@ -133,6 +132,11 @@ private:
 	void op_0x2C();
 	void op_0x3C();
 
+	void op_0x04();
+	void op_0x14();
+	void op_0x24();
+	void op_0x34();
+
 	// DEC
 	void op_0x0D();
 	void op_0x1D();
@@ -142,6 +146,16 @@ private:
 	void op_0x15();
 	void op_0x25();
 	void op_0x35();
+
+	//OR
+	void op_0xB0();
+	void op_0xB1();
+	void op_0xB2();
+	void op_0xB3();
+	void op_0xB4();
+	void op_0xB5();
+	void op_0xB6();
+	void op_0xB7();
 
 	// XOR
 	void op_0xA8();

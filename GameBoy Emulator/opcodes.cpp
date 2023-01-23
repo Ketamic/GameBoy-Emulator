@@ -101,7 +101,7 @@ void CPU::op_0x06() {
 
 //LD B, B - Load the contents of register B into register B.
 void CPU::op_0x40() {
-	B = B;
+	//B = B; // This operation keeps B the same
 }
 
 //LD D, B - Load the contents of register B into register B.
@@ -158,6 +158,30 @@ void CPU::op_0x3C() {
 	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((A & 0x0F) == 0x00);
 }
 
+// INC B
+void CPU::op_0x04() {
+	++B;
+	ZERO_FLAG = (B == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((B & 0x0F) == 0x00);
+}
+
+// INC D
+void CPU::op_0x14() {
+	++D;
+	ZERO_FLAG = (D == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((D & 0x0F) == 0x00);
+}
+
+// INC H
+void CPU::op_0x24() {
+	++H;
+	ZERO_FLAG = (H == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((H & 0x0F) == 0x00);
+}
+
+// INC (HL)
+void CPU::op_0x34() {
+	memory.write(HL, memory.read(HL) + 1);
+	ZERO_FLAG = (memory.read(HL) == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
+}
+
 // DEC
 
 // DEC C - Decrement the contents of register C by 1
@@ -204,11 +228,59 @@ void CPU::op_0x25() {
 
 // DEC (HL) - Decrement the contents of memory specified by register pair HL by 1.
 void CPU::op_0x35() {
-	memory.write(HL, HL - 1);
+	memory.write(HL, memory.read(HL) - 1);
 	ZERO_FLAG = (memory.read(HL) == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
 }
 
+// OR
 
+// OR B
+void CPU::op_0xB0() {
+	A = A | B;
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR C
+void CPU::op_0xB1() {
+	A = A | C;
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR D
+void CPU::op_0xB2() {
+	A = A | D;
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR E
+void CPU::op_0xB3() {
+	A = A | E;
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR H
+void CPU::op_0xB4() {
+	A = A | H;
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR L
+void CPU::op_0xB5() {
+	A = A | L;
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR (HL)
+void CPU::op_0xB6() {
+	A = A | memory.read(HL);
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
+
+// OR A
+void CPU::op_0xB7() {
+	//A = A | A; // This operation won't ever actually change A
+	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+}
 // XOR
 
 // XOR B
@@ -369,6 +441,11 @@ void CPU::init_opcodes() {
 	Opcodes[0x1C] = &CPU::op_0x1C;
 	Opcodes[0x2C] = &CPU::op_0x2C;
 	Opcodes[0x3C] = &CPU::op_0x3C;
+
+	Opcodes[0x04] = &CPU::op_0x04;
+	Opcodes[0x14] = &CPU::op_0x14;
+	Opcodes[0x24] = &CPU::op_0x24;
+	Opcodes[0x34] = &CPU::op_0x34;
 	/*Opcodes[0x05] = &CPU::op_0x05;		Yet to be implemented
 	Opcodes[0x15] = &CPU::op_0x15;
 	Opcodes[0x25] = &CPU::op_0x25;
@@ -399,6 +476,16 @@ void CPU::init_opcodes() {
 	Opcodes[0xCD] = &CPU::op_0xCD;
 
 	Opcodes[0xFF] = &CPU::op_0xFF;
+
+	// OR
+	Opcodes[0xB0] = &CPU::op_0xB0;
+	Opcodes[0xB1] = &CPU::op_0xB1;
+	Opcodes[0xB2] = &CPU::op_0xB2;
+	Opcodes[0xB3] = &CPU::op_0xB3;
+	Opcodes[0xB4] = &CPU::op_0xB4;
+	Opcodes[0xB5] = &CPU::op_0xB5;
+	Opcodes[0xB6] = &CPU::op_0xB6;
+	Opcodes[0xB7] = &CPU::op_0xB7;
 
 	//PUSH
 
