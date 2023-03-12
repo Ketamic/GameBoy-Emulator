@@ -4,9 +4,16 @@
 #include <iostream>
 #include <stdio.h>
 
+void CPU::init_registers() {
+	A = 0x01;
+
+}
+
 void CPU::init() {
 	printf("initializing...");
+	init_registers();
 	init_opcodes();
+	memory.init();
 }
 
 /*
@@ -35,7 +42,6 @@ void CPU::stepCPU() {
 		if (memory.read(PC) == 0xCD) {
 			
 			xyzzy = 0;
-
 		}
 
 		// Get the Opcode from the Opcode mapb

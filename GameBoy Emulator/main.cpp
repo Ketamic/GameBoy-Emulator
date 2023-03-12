@@ -49,6 +49,7 @@ int main(int argc, char* argv[]) {
 
 	//GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\Tetris (World) (Rev 1)\\Tetris (World) (Rev 1).gb");
 	GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\Tetris (World) (Rev 1).gb");
+	GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\dmg_rom.bin");
 
 	GBCPU.stepCPU();
 

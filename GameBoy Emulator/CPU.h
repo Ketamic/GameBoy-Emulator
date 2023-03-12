@@ -2,6 +2,7 @@
 #include <cstdint>
 #include <unordered_map>
 #include "Memory.h"
+#include "Flags.h"
 
 class CPU
 {
@@ -11,12 +12,20 @@ public:
 	void loadROM(char const* path);
 
 private:
+	// This allows me to define the Flags within 
+	/*
+	struct Flags {
+		unsigned b0 : 1, b1 : 1, b2 : 1, b3 : 1, CARRY_FLAG : 1, HALF_CARRY_FLAG : 1, SUBTRACT_FLAG : 1, ZERO_FLAG : 1;
+	}; */
+
 	// Registers
 	// This weird formatting allows me to access either just the eight bit register OR the whole 16 bit registers,
 	// with any value changes on one affecting the other correctly
+
 	union {
 		struct {
-			std::uint8_t F;
+			//std::uint8_t F;
+			Flags F;
 			std::uint8_t A;
 		};
 		std::uint16_t AF = 0x0000;
@@ -49,10 +58,10 @@ private:
 	std::uint16_t PC = 0x0100;
 
 	// Flags
-	std::uint8_t ZERO_FLAG		 = 0x00;
+	/*std::uint8_t ZERO_FLAG = 0x00;
 	std::uint8_t SUBTRACT_FLAG	 = 0x00;
 	std::uint8_t HALF_CARRY_FLAG = 0x00; // Check if there is overflow from the lower nibble to the upper nibble
-	std::uint8_t CARRY_FLAG		 = 0x00;
+	std::uint8_t CARRY_FLAG		 = 0x00; */
 
 	// Interupts
 	bool HALT = 0;
@@ -108,6 +117,8 @@ private:
 	void op_0x60();
 	void op_0x70();
 
+	void op_0x78();
+
 	//JR
 	void op_0x20();
 
@@ -117,7 +128,6 @@ private:
 	void op_0x08();
 	void op_0x09();
 	void op_0x0A();
-	void op_0x0B();
 	void op_0x0F();
 	void op_0x10();
 	void op_0x11();
@@ -146,6 +156,11 @@ private:
 	void op_0x15();
 	void op_0x25();
 	void op_0x35();
+
+	void op_0x0B();
+	void op_0x1B();
+	void op_0x2B();
+	void op_0x3B();
 
 	//OR
 	void op_0xB0();
@@ -184,4 +199,5 @@ private:
 
 
 	void init_opcodes();
+	void init_registers();
 };

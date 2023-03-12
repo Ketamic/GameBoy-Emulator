@@ -114,18 +114,25 @@ void CPU::op_0x60() {
 	H = B;
 }
 
-//LD B, B - Load the contents of register B into register B.
+//LD (HL), B - Store the contents of register B in the memory location specified by register pair HL.
 void CPU::op_0x70() {
 	memory.write(HL, B);
 }
 
+// LD A, B - Load the contents of register B into register A.
+void CPU::op_0x78() {
+	A = B;
+}
 
 // JR
 
 // JR NZ, r8
 void CPU::op_0x20() {
-	if (ZERO_FLAG == 0) {
-		PC += (std::int8_t)GetImmediateOperand();
+	if (F.ZERO_FLAG == 0) {
+		std::int8_t s8 = (std::int8_t)GetImmediateOperand();
+		//--PC; // keep the ++PC in the immediate operands from changing the PC value
+		PC += s8;
+		
 	}
 	else {
 		++PC;
@@ -137,49 +144,49 @@ void CPU::op_0x20() {
 // INC C - Increment the contents of C by 1
 void CPU::op_0x0C() {
 	++C;
-	ZERO_FLAG = (C == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((C & 0x0F) == 0x00);
+	F.ZERO_FLAG = (C == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((C & 0x0F) == 0x00);
 }
 
 // INC E - Increment the contents of C by 1
 void CPU::op_0x1C() {
 	++E;
-	ZERO_FLAG = (E == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((E & 0x0F) == 0x00);
+	F.ZERO_FLAG = (E == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((E & 0x0F) == 0x00);
 }
 
 // INC L - Increment the contents of C by 1
 void CPU::op_0x2C() {
 	++L;
-	ZERO_FLAG = (L == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((L & 0x0F) == 0x00);
+	F.ZERO_FLAG = (L == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((L & 0x0F) == 0x00);
 }
 
 // INC A - Increment the contents of C by 1
 void CPU::op_0x3C() {
 	++A;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((A & 0x0F) == 0x00);
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((A & 0x0F) == 0x00);
 }
 
 // INC B
 void CPU::op_0x04() {
 	++B;
-	ZERO_FLAG = (B == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((B & 0x0F) == 0x00);
+	F.ZERO_FLAG = (B == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((B & 0x0F) == 0x00);
 }
 
 // INC D
 void CPU::op_0x14() {
 	++D;
-	ZERO_FLAG = (D == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((D & 0x0F) == 0x00);
+	F.ZERO_FLAG = (D == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((D & 0x0F) == 0x00);
 }
 
 // INC H
 void CPU::op_0x24() {
 	++H;
-	ZERO_FLAG = (H == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((H & 0x0F) == 0x00);
+	F.ZERO_FLAG = (H == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((H & 0x0F) == 0x00);
 }
 
 // INC (HL)
 void CPU::op_0x34() {
 	memory.write(HL, memory.read(HL) + 1);
-	ZERO_FLAG = (memory.read(HL) == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
+	F.ZERO_FLAG = (memory.read(HL) == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
 }
 
 // DEC
@@ -187,49 +194,65 @@ void CPU::op_0x34() {
 // DEC C - Decrement the contents of register C by 1
 void CPU::op_0x0D() {
 	--C;
-	ZERO_FLAG = (C == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((C & 0x0F) == 0x00);
+	F.ZERO_FLAG = (C == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((C & 0x0F) == 0x00);
 }
 
 // DEC E - Decrement the contents of register E by 1
 void CPU::op_0x1D() {
 	--E;
-	ZERO_FLAG = (E == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((E & 0x0F) == 0x00);
+	F.ZERO_FLAG = (E == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((E & 0x0F) == 0x00);
 }
 
 // DEC L - Decrement the contents of register L by 1
 void CPU::op_0x2D() {
 	--L;
-	ZERO_FLAG = (L == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((L & 0x0F) == 0x00);
+	F.ZERO_FLAG = (L == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((L & 0x0F) == 0x00);
 }
 
 // DEC A - Increment the contents of C by 1
 void CPU::op_0x3D() {
 	--A;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((A & 0x0F) == 0x00);
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((A & 0x0F) == 0x00);
 }
 
 // DEC B - Decrement the contents of register B by 1
 void CPU::op_0x05() {
 	--B;
-	ZERO_FLAG = (B == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((B & 0x0F) == 0x00);
+	F.ZERO_FLAG = (B == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((B & 0x0F) == 0x00);
 }
 
 // DEC D - Decrement the contents of register D by 1
 void CPU::op_0x15() {
 	--D;
-	ZERO_FLAG = (D == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((D & 0x0F) == 0x00);
+	F.ZERO_FLAG = (D == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((D & 0x0F) == 0x00);
 }
 
 // DEC H - Decrement the contents of register H by 1
 void CPU::op_0x25() {
 	--H;
-	ZERO_FLAG = (H == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((H & 0x0F) == 0x00);
+	F.ZERO_FLAG = (H == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((H & 0x0F) == 0x00);
 }
 
 // DEC (HL) - Decrement the contents of memory specified by register pair HL by 1.
 void CPU::op_0x35() {
 	memory.write(HL, memory.read(HL) - 1);
-	ZERO_FLAG = (memory.read(HL) == 0x00); SUBTRACT_FLAG = 1; HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
+	F.ZERO_FLAG = (memory.read(HL) == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
+}
+
+void CPU::op_0x0B() {
+	--BC;
+}
+
+void CPU::op_0x1B() {
+	--DE;
+}
+
+void CPU::op_0x2B() {
+	--HL;
+}
+
+void CPU::op_0x3B() {
+	--SP;
 }
 
 // OR
@@ -237,98 +260,98 @@ void CPU::op_0x35() {
 // OR B
 void CPU::op_0xB0() {
 	A = A | B;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR C
 void CPU::op_0xB1() {
 	A = A | C;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR D
 void CPU::op_0xB2() {
 	A = A | D;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR E
 void CPU::op_0xB3() {
 	A = A | E;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR H
 void CPU::op_0xB4() {
 	A = A | H;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR L
 void CPU::op_0xB5() {
 	A = A | L;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR (HL)
 void CPU::op_0xB6() {
 	A = A | memory.read(HL);
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // OR A
 void CPU::op_0xB7() {
 	//A = A | A; // This operation won't ever actually change A
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 // XOR
 
 // XOR B
 void CPU::op_0xA8() {
 	A = A ^ B;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR C
 void CPU::op_0xA9() {
 	A = A ^ C;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR D
 void CPU::op_0xAA() {
 	A = A ^ D;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR E
 void CPU::op_0xAB() {
 	A = A ^ E;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR H
 void CPU::op_0xAC() {
 	A = A ^ H;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR L
 void CPU::op_0xAD() {
 	A = A ^ L;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR (HL)
 void CPU::op_0xAE() {
 	A = A ^ HL;
-	ZERO_FLAG = (A == 0x00); SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // XOR A
 void CPU::op_0xAF() {
 	A = 0x00;
-	ZERO_FLAG = 1; SUBTRACT_FLAG = 0; HALF_CARRY_FLAG = 0; CARRY_FLAG = 0;
+	F.ZERO_FLAG = 1; F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = 0;
 }
 
 // JP
@@ -375,10 +398,10 @@ void CPU::op_0xF5() {
 void CPU::op_0xFE() {
 	std::uint8_t d8 = GetImmediateOperand();
 	std::uint8_t NN = (A - d8);
-	ZERO_FLAG = (NN == 0x00);
-	SUBTRACT_FLAG = 1;
-	HALF_CARRY_FLAG = (A ^ d8 ^ NN) & 0x10 ? 1 : 0;
-	CARRY_FLAG = (NN & 0xFF00) ? 1 : 0;
+	F.ZERO_FLAG = (NN == 0x00);
+	F.SUBTRACT_FLAG = 1;
+	F.HALF_CARRY_FLAG = (A ^ d8 ^ NN) & 0x10 ? 1 : 0;
+	F.CARRY_FLAG = (NN & 0xFF00) ? 1 : 0;
 }
 
 uint8_t Opcode_Cycles[0x100] = {
@@ -419,6 +442,8 @@ void CPU::init_opcodes() {
 	Opcodes[0xFA] = &CPU::op_0xFA;
 	Opcodes[0x2A] = &CPU::op_0x2A;
 	Opcodes[0xE2] = &CPU::op_0xE2;
+
+	Opcodes[0x78] = &CPU::op_0x78;
 
 	Opcodes[0xEA] = &CPU::op_0xEA;
 
@@ -470,6 +495,11 @@ void CPU::init_opcodes() {
 	Opcodes[0xAD] = &CPU::op_0xAD;
 	Opcodes[0xAE] = &CPU::op_0xAE;
 	Opcodes[0xAF] = &CPU::op_0xAF;
+
+	Opcodes[0x0B] = &CPU::op_0x0B;
+	Opcodes[0x0B] = &CPU::op_0x1B;
+	Opcodes[0x0B] = &CPU::op_0x2B;
+	Opcodes[0x0B] = &CPU::op_0x3B;
 
 	Opcodes[0xF3] = &CPU::op_0xF3;
 

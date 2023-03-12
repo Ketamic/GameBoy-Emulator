@@ -1,6 +1,11 @@
 #include "Memory.h"
 #include <stdio.h>
 
+// Initialize values in memory that would usually be set by the boot ROM
+void Memory::init() {
+
+}
+
 // Read from memory
 uint8_t Memory::read(uint16_t address) {
 
