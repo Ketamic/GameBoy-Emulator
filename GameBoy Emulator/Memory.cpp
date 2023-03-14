@@ -2,9 +2,11 @@
 #include <stdio.h>
 
 // Initialize values in memory that would usually be set by the boot ROM
+/*
 void Memory::init() {
 
-}
+} 
+*/
 
 // Read from memory
 uint8_t Memory::read(uint16_t address) {
@@ -63,6 +65,7 @@ void Memory::write(uint16_t address, uint8_t value) {
 		ROM_1[(0x7FFF - address)] = value;
 	}
 	else if (address <= 0x9FFF) {
+		printf("OOOOOOOOOOOH BABY We'RE WRITING THE VRAM");
 		VRAM[(0x9FFF - address)] = value;
 	}
 	else if (address <= 0xBFFF) {

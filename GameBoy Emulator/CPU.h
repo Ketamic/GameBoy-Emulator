@@ -12,11 +12,8 @@ public:
 	void loadROM(char const* path);
 
 private:
-	// This allows me to define the Flags within 
-	/*
-	struct Flags {
-		unsigned b0 : 1, b1 : 1, b2 : 1, b3 : 1, CARRY_FLAG : 1, HALF_CARRY_FLAG : 1, SUBTRACT_FLAG : 1, ZERO_FLAG : 1;
-	}; */
+	void init_opcodes();
+	void init_opcodes16();
 
 	// Registers
 	// This weird formatting allows me to access either just the eight bit register OR the whole 16 bit registers,
@@ -24,7 +21,6 @@ private:
 
 	union {
 		struct {
-			//std::uint8_t F;
 			Flags F;
 			std::uint8_t A;
 		};
@@ -53,9 +49,11 @@ private:
 	};
 
 	// Stack Pointer - Initialized to the top of the WRAM
-	std::uint16_t SP = 0xE000;
+	//std::uint16_t SP = 0xE000;
+	std::uint16_t SP = 0x0000;
 	// Program Counter
-	std::uint16_t PC = 0x0100;
+	//std::uint16_t PC = 0x0100;
+	std::uint16_t PC = 0x0000;
 
 	// Flags
 	/*std::uint8_t ZERO_FLAG = 0x00;
@@ -76,13 +74,14 @@ private:
 
 	typedef void (CPU::* Opcode)(void);
 	Opcode Opcodes[0xFF + 1];
+	Opcode Opcodes16[0xFF + 1];
 
-	void test();
-
-	// Nice utility function for memory
+	// Nice utility functions for memory
 	void StackPush(uint16_t value);
 	std::uint16_t GetImmediateOperands();
 	std::uint8_t GetImmediateOperand();
+	std::uint8_t GetBit(uint8_t reg, int shift);
+	std::uint8_t SetBit(std::uint8_t value, int bit, int s);
 
 	// OPCODES
 
@@ -96,6 +95,8 @@ private:
 	// LD
 	void op_0x21();
 	void op_0x32();
+
+	void op_0x77();
 
 	void op_0xE0();
 	void op_0xF0();
@@ -197,7 +198,14 @@ private:
 	// CP d8
 	void op_0xFE();
 
+	// ------------------ 16-BIT OPCODES ------------------ 
+	void op_0xCB();
 
-	void init_opcodes();
-	void init_registers();
+	// BIT
+	void op_0xCB7C();
+
+	// RL
+	void op_0xCB11();
+
+
 };

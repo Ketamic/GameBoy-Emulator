@@ -23,17 +23,25 @@ void CPU::op_0x00() {
 	// This does nothing
 }
 
+// LD
+
+// LD DE
 void CPU::op_0x01() {
-
-
-	//return NULL;
+	BC = GetImmediateOperands();
 }
 
-// LD
+void CPU::op_0x11() {
+	DE = GetImmediateOperands();
+}
 
 // LD HL - Load the 2 bytes of immediate data into register pair HL.
 void CPU::op_0x21() {
 	HL = GetImmediateOperands();
+}
+
+//LD SP, d16
+void CPU::op_0x31() {
+	SP = GetImmediateOperands();
 }
 
 
@@ -41,6 +49,11 @@ void CPU::op_0x21() {
 void CPU::op_0x32() {
 	memory.write(HL, A);
 	--HL;
+}
+
+// LD (HL), A - Store the contents of register A in the memory location specified by register pair HL.
+void CPU::op_0x77() {
+	memory.write(HL, A);
 }
 
 // LD, (a8) A - Store the contents of register A in the internal RAM, port register, or mode register at the address in the range 0xFF00-0xFFFF specified by the 8-bit immediate operand a8.
@@ -75,10 +88,6 @@ void CPU::op_0xEA() {
 	memory.write(GetImmediateOperands(), A);
 }
 
-//LD SP, d16
-void CPU::op_0x31() {
-	SP = GetImmediateOperands();
-}
 
 //LD (HL), d8
 void CPU::op_0x36() {
@@ -123,6 +132,7 @@ void CPU::op_0x70() {
 void CPU::op_0x78() {
 	A = B;
 }
+
 
 // JR
 
@@ -394,6 +404,12 @@ void CPU::op_0xF5() {
 
 // CP
 
+// 16-Bit opcode preface
+void CPU::op_0xCB() {
+	++PC; // this is so we read the actual instruction, not just CB again
+	(this->*Opcodes16[memory.read(PC)])();
+}
+
 // CP d8 - Compare the contents of register A and the contents of the 8-bit immediate operand d8 by calculating A - d8, and set the Z flag if they are equal.
 void CPU::op_0xFE() {
 	std::uint8_t d8 = GetImmediateOperand();
@@ -424,6 +440,8 @@ uint8_t Opcode_Cycles[0x100] = {
 	12,12, 8, 4, 0,16, 8,32,12, 8,16, 4, 0, 0, 8,32     // 0xF0
 };
 
+
+
 // Loading all of the opcodes into the Opcode map
 void CPU::init_opcodes() {
 	Opcodes[0x00] = &CPU::op_0x00;
@@ -431,8 +449,13 @@ void CPU::init_opcodes() {
 	Opcodes[0x0C] = &CPU::op_0x0C;
 
 	// LD
+	Opcodes[0x01] = &CPU::op_0x01;
+	Opcodes[0x11] = &CPU::op_0x11;
 	Opcodes[0x21] = &CPU::op_0x21;
 	Opcodes[0x32] = &CPU::op_0x32;
+
+	Opcodes[0x77] = &CPU::op_0x77;
+
 	Opcodes[0x0E] = &CPU::op_0x0E;
 	Opcodes[0x3E] = &CPU::op_0x3E;
 	Opcodes[0x06] = &CPU::op_0x06;
@@ -523,4 +546,8 @@ void CPU::init_opcodes() {
 
 	// CD
 	Opcodes[0xFE] = &CPU::op_0xFE;
+
+	//CB 16-Bit opcodes
+	Opcodes[0xCB] = &CPU::op_0xCB;
 }
+

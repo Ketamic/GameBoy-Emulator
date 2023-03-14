@@ -4,16 +4,12 @@
 #include <iostream>
 #include <stdio.h>
 
-void CPU::init_registers() {
-	A = 0x01;
-
-}
-
 void CPU::init() {
 	printf("initializing...");
-	init_registers();
+	//init_registers();
 	init_opcodes();
-	memory.init();
+	init_opcodes16();
+	//memory.init();
 }
 
 /*
@@ -38,14 +34,21 @@ void CPU::stepCPU() {
 		printf("\n\nOPCODE: 0x%X\n\n", (memory.read(PC)));
 		printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X\n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
 		//printf(" 0xFF44 = %X \n", memory.read(0xFF44));
-		
+		/*
 		if (memory.read(PC) == 0xCD) {
 			
 			xyzzy = 0;
 		}
+		*/
+		// If there is a 16-bit opcode then pull from the 16-bit opcode map
+		//if (memory.read(PC == 0xCB)) {
 
-		// Get the Opcode from the Opcode mapb
-		(this->*Opcodes[memory.read(PC)])();
+		//}
+		//else { // If it is not then pull from the normal map
+			// Get the Opcode from the Opcode map
+			(this->*Opcodes[memory.read(PC)])();
+		//}
+
 
 		//std::cin.get();
 		if (xyzzy == 0) { // Run X amount of cycles
@@ -103,7 +106,7 @@ void CPU::loadROM(char const* path)
 
 	// Loading the ROM into memory
 	for (int i = 0; i < fileSize; ++i) {
-		memory.write(0x0000 + i, fileBuf[i]);
+		memory.write(i, fileBuf[i]);
 	}
 
 	//std::cin.get();
