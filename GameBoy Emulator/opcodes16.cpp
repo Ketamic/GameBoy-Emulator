@@ -16,10 +16,13 @@ void CPU::op_0xCB7C() {
 
 // RL
 void CPU::op_0xCB11() {
-	for (int i = 7; i > 0; --i) {
-		SetBit(C, i - 1, GetBit(C, i));
-	}
-	SetBit(C, 0, F.CARRY_FLAG);
+	uint8_t bit7 = GetBit(C, 7);
+	C <<= 1;
+	C = SetBit(C, 0, F.CARRY_FLAG);
+	F.ZERO_FLAG = (C == 0x00); 
+	F.SUBTRACT_FLAG = 0;
+	F.HALF_CARRY_FLAG = 0;
+	F.CARRY_FLAG = bit7;
 }
 
 

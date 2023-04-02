@@ -65,7 +65,11 @@ void Memory::write(uint16_t address, uint8_t value) {
 		ROM_1[(0x7FFF - address)] = value;
 	}
 	else if (address <= 0x9FFF) {
-		printf("OOOOOOOOOOOH BABY We'RE WRITING THE VRAM");
+		printf("OOOOOOOOOOOH BABY We'RE WRITING THE VRAM, 0x%X, with a value of 0x%X", address, value);
+		if (address == 0x8000)
+			printf("WRITING TO 0x8000");
+		if (address == 0x8190)
+			printf("WRITING TO 0x8190");
 		VRAM[(0x9FFF - address)] = value;
 	}
 	else if (address <= 0xBFFF) {

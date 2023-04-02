@@ -7,6 +7,12 @@ void CPU::StackPush(uint16_t value) {
 	memory.write(SP, value & ((1 << 8) - 1)); // LSB
 }
 
+uint16_t CPU::StackPop() {
+	uint8_t pt1 = memory.read(SP++);
+	uint8_t pt2 = memory.read(SP++);
+	return ((uint16_t)pt2 << 8) | pt1;
+}
+
 std::uint16_t CPU::GetImmediateOperands() {
 	//	 LSB			   MSB
 	PC += 2; // Keeps from reading immedate operand once the opcode is done
@@ -56,6 +62,12 @@ void CPU::op_0x77() {
 	memory.write(HL, A);
 }
 
+// LD (HL+), A - Store the contents of register A into the memory location specified by register pair HL, and simultaneously increment the contents of HL
+void CPU::op_0x22() {
+	memory.write(HL, A);
+	++HL;
+}
+
 // LD, (a8) A - Store the contents of register A in the internal RAM, port register, or mode register at the address in the range 0xFF00-0xFFFF specified by the 8-bit immediate operand a8.
 void CPU::op_0xE0() {
 	memory.write(0xFF << 8 | (GetImmediateOperand() & 0xFF), A);
@@ -65,6 +77,11 @@ void CPU::op_0xE0() {
 void CPU::op_0xF0() {
 	//printf("\n\n\n 0x%X \n\n\n", (0xFF << 8 | GetImmediateOperand())); PC -= 2;
 	A = memory.read(0xFF << 8 | ( GetImmediateOperand() & 0xFF));
+}
+
+// LD A, (DE) - Load the 8-bit contents of memory specified by register pair DE into register A.
+void CPU::op_0x1A() {
+	A = memory.read(DE);
 }
 
 // LD A, (a16)
@@ -78,6 +95,36 @@ void CPU::op_0x2A() {
 	++HL;
 }
 
+// LD A, B
+void CPU::op_0x78() {
+	A = B;
+}
+
+// LD A, C
+void CPU::op_0x79() {
+	A = C;
+}
+
+// LD A, D
+void CPU::op_0x7A() {
+	A = D;
+}
+
+// LD A, E
+void CPU::op_0x7B() {
+	A = E;
+}
+
+// LD A, H
+void CPU::op_0x7C() {
+	A = H;
+}
+
+// LD, A, L
+void CPU::op_0x7D() {
+	A = L;
+}
+
 // LD (C), A
 void CPU::op_0xE2() {
 	memory.write((0xFF << 8 | C & 0xFF), A);
@@ -88,6 +135,10 @@ void CPU::op_0xEA() {
 	memory.write(GetImmediateOperands(), A);
 }
 
+//LD C, A
+void CPU::op_0x4F() {
+	C = A;
+}
 
 //LD (HL), d8
 void CPU::op_0x36() {
@@ -99,6 +150,17 @@ void CPU::op_0x0E() {
 	C = GetImmediateOperand();
 }
 
+//LD, E
+void CPU::op_0x1E() {
+	E = GetImmediateOperand();
+}
+
+//LD, L
+void CPU::op_0x2E() {
+	L = GetImmediateOperand();
+}
+
+// LD< A
 void CPU::op_0x3E() {
 	A = GetImmediateOperand();
 }
@@ -128,11 +190,6 @@ void CPU::op_0x70() {
 	memory.write(HL, B);
 }
 
-// LD A, B - Load the contents of register B into register A.
-void CPU::op_0x78() {
-	A = B;
-}
-
 
 // JR
 
@@ -143,6 +200,17 @@ void CPU::op_0x20() {
 		//--PC; // keep the ++PC in the immediate operands from changing the PC value
 		PC += s8;
 		
+	}
+	else {
+		++PC;
+	}
+}
+
+// JR Z, s8 - If the Z flag is 1, jump s8 steps from the current address stored in the program counter (PC). If not, the instruction following the current JP instruction is executed (as usual).
+void CPU::op_0x28() {
+	if (F.ZERO_FLAG == 1) {
+		std::int8_t s8 = (std::int8_t)GetImmediateOperand();
+		PC += s8;
 	}
 	else {
 		++PC;
@@ -197,6 +265,22 @@ void CPU::op_0x24() {
 void CPU::op_0x34() {
 	memory.write(HL, memory.read(HL) + 1);
 	F.ZERO_FLAG = (memory.read(HL) == 0x00); F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
+}
+
+void CPU::op_0x03() {
+	++BC;
+}
+
+void CPU::op_0x13() {
+	++DE;
+}
+
+void CPU::op_0x23() {
+	++HL;
+}
+
+void CPU::op_0x33() {
+	++SP;
 }
 
 // DEC
@@ -397,9 +481,46 @@ void CPU::op_0xFF() {
 
 // PUSH
 
+// PUSH BC
+void CPU::op_0xC5() {
+	StackPush(BC);
+}
+
+// PUSH DE
+void CPU::op_0xD5() {
+	StackPush(DE);
+}
+
+// PUSH HL
+void CPU::op_0xE5() {
+	StackPush(HL);
+}
+
 // PUSH AF
 void CPU::op_0xF5() {
 	StackPush(AF);
+}
+
+// POP
+
+// POP BC
+void CPU::op_0xC1() {
+	BC = StackPop();
+}
+
+// POP DE
+void CPU::op_0xD1() {
+	DE = StackPop();
+}
+
+// POP HL
+void CPU::op_0xE1() {
+	HL = StackPop();
+}
+
+// POP AF
+void CPU::op_0xF1() {
+	AF = StackPop();
 }
 
 // CP
@@ -418,6 +539,24 @@ void CPU::op_0xFE() {
 	F.SUBTRACT_FLAG = 1;
 	F.HALF_CARRY_FLAG = (A ^ d8 ^ NN) & 0x10 ? 1 : 0;
 	F.CARRY_FLAG = (NN & 0xFF00) ? 1 : 0;
+}
+
+// RL
+
+void CPU::op_0x07() {
+	A = (A << 1) | (A >> 7);
+	F.ZERO_FLAG = 0; F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG =  0; F.CARRY_FLAG = (A & 0x01);
+}
+
+void CPU::op_0x17() {
+	uint8_t bit7 = GetBit(A, 7);
+	A = A << 1;
+	A = SetBit(A, 0, bit7);
+	F.ZERO_FLAG = 0; F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = bit7;
+}
+
+void CPU::op_0xC9() {
+	PC = StackPop();
 }
 
 uint8_t Opcode_Cycles[0x100] = {
@@ -455,23 +594,33 @@ void CPU::init_opcodes() {
 	Opcodes[0x32] = &CPU::op_0x32;
 
 	Opcodes[0x77] = &CPU::op_0x77;
+	Opcodes[0x22] = &CPU::op_0x22;
 
 	Opcodes[0x0E] = &CPU::op_0x0E;
+	Opcodes[0x1E] = &CPU::op_0x1E;
+	Opcodes[0x1E] = &CPU::op_0x2E;
 	Opcodes[0x3E] = &CPU::op_0x3E;
 	Opcodes[0x06] = &CPU::op_0x06;
 
 	Opcodes[0xE0] = &CPU::op_0xE0;
 	Opcodes[0xF0] = &CPU::op_0xF0;
+	Opcodes[0x1A] = &CPU::op_0x1A;
 	Opcodes[0xFA] = &CPU::op_0xFA;
 	Opcodes[0x2A] = &CPU::op_0x2A;
-	Opcodes[0xE2] = &CPU::op_0xE2;
-
 	Opcodes[0x78] = &CPU::op_0x78;
+	Opcodes[0x79] = &CPU::op_0x79;
+	Opcodes[0x7A] = &CPU::op_0x7A;
+	Opcodes[0x7B] = &CPU::op_0x7B;
+	Opcodes[0x7C] = &CPU::op_0x7C;
+	Opcodes[0x7D] = &CPU::op_0x7D;
+
+	Opcodes[0xE2] = &CPU::op_0xE2;
 
 	Opcodes[0xEA] = &CPU::op_0xEA;
 
 	Opcodes[0x31] = &CPU::op_0x31;
 
+	Opcodes[0x4F] = &CPU::op_0x4F;
 	Opcodes[0x36] = &CPU::op_0x36;
 
 	Opcodes[0xC3] = &CPU::op_0xC3;
@@ -483,6 +632,7 @@ void CPU::init_opcodes() {
 
 	// JR
 	Opcodes[0x20] = &CPU::op_0x20;
+	Opcodes[0x28] = &CPU::op_0x28;
 
 	// INC
 	Opcodes[0x0C] = &CPU::op_0x0C;
@@ -494,6 +644,13 @@ void CPU::init_opcodes() {
 	Opcodes[0x14] = &CPU::op_0x14;
 	Opcodes[0x24] = &CPU::op_0x24;
 	Opcodes[0x34] = &CPU::op_0x34;
+
+	Opcodes[0x03] = &CPU::op_0x03;
+	Opcodes[0x13] = &CPU::op_0x13;
+	Opcodes[0x23] = &CPU::op_0x23;
+	Opcodes[0x33] = &CPU::op_0x33;
+
+
 	/*Opcodes[0x05] = &CPU::op_0x05;		Yet to be implemented
 	Opcodes[0x15] = &CPU::op_0x15;
 	Opcodes[0x25] = &CPU::op_0x25;
@@ -541,11 +698,26 @@ void CPU::init_opcodes() {
 	Opcodes[0xB7] = &CPU::op_0xB7;
 
 	//PUSH
-
+	Opcodes[0xC5] = &CPU::op_0xC5;
+	Opcodes[0xD5] = &CPU::op_0xD5;
+	Opcodes[0xE5] = &CPU::op_0xE5;
 	Opcodes[0xF5] = &CPU::op_0xF5;
+
+	// POP
+	Opcodes[0xC1] = &CPU::op_0xC1;
+	Opcodes[0xD1] = &CPU::op_0xD1;
+	Opcodes[0xE1] = &CPU::op_0xE1;
+	Opcodes[0xF1] = &CPU::op_0xF1;
 
 	// CD
 	Opcodes[0xFE] = &CPU::op_0xFE;
+
+	// RL
+	Opcodes[0x07] = &CPU::op_0x07;
+	Opcodes[0x17] = &CPU::op_0x17;
+
+	// RET
+	Opcodes[0xC9] = &CPU::op_0xC9;
 
 	//CB 16-Bit opcodes
 	Opcodes[0xCB] = &CPU::op_0xCB;

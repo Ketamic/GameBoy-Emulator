@@ -55,6 +55,10 @@ void CPU::stepCPU() {
 			std::cin >> xyzzy;
 		}
 		--xyzzy;
+
+		
+		printf("\nVRAM 0x8010: %X", memory.read(0x8010));
+		printf("\nVRAM 0x8012: %X", memory.read(0x8012));
 		//this->*(opcode_map.find(0x00)->second)(this);
 		++PC;
 

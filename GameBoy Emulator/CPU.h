@@ -78,6 +78,7 @@ private:
 
 	// Nice utility functions for memory
 	void StackPush(uint16_t value);
+	std::uint16_t StackPop();
 	std::uint16_t GetImmediateOperands();
 	std::uint8_t GetImmediateOperand();
 	std::uint8_t GetBit(uint8_t reg, int shift);
@@ -97,20 +98,31 @@ private:
 	void op_0x32();
 
 	void op_0x77();
+	void op_0x22();
 
 	void op_0xE0();
 	void op_0xF0();
+	void op_0x1A();
 	void op_0xFA();
 	void op_0x2A();
+	void op_0x78();
+	void op_0x79();
+	void op_0x7A();
+	void op_0x7B();
+	void op_0x7C();
+	void op_0x7D();
 	void op_0xE2();
 
 	void op_0xEA();
 
 	void op_0x31();
 
+	void op_0x4F();
 	void op_0x36();
 
 	void op_0x0E();
+	void op_0x1E();
+	void op_0x2E();
 	void op_0x3E();
 
 	void op_0x40();
@@ -118,14 +130,11 @@ private:
 	void op_0x60();
 	void op_0x70();
 
-	void op_0x78();
-
 	//JR
 	void op_0x20();
+	void op_0x28();
 
-	void op_0x03();
 	void op_0x06();
-	void op_0x07();
 	void op_0x08();
 	void op_0x09();
 	void op_0x0A();
@@ -133,7 +142,6 @@ private:
 	void op_0x10();
 	void op_0x11();
 	void op_0x12();
-	void op_0x13();
 
 	void op_0xC3();
 
@@ -147,6 +155,11 @@ private:
 	void op_0x14();
 	void op_0x24();
 	void op_0x34();
+
+	void op_0x03();
+	void op_0x13();
+	void op_0x23();
+	void op_0x33();
 
 	// DEC
 	void op_0x0D();
@@ -193,10 +206,26 @@ private:
 	void op_0xF3();
 
 	// PUSH
+	void op_0xC5();
+	void op_0xD5();
+	void op_0xE5();
 	void op_0xF5();
+
+	// POP
+	void op_0xC1();
+	void op_0xD1();
+	void op_0xE1();
+	void op_0xF1();
 
 	// CP d8
 	void op_0xFE();
+
+	// RL
+	void op_0x07();
+	void op_0x17();
+
+	// RET
+	void op_0xC9();
 
 	// ------------------ 16-BIT OPCODES ------------------ 
 	void op_0xCB();

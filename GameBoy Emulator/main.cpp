@@ -19,10 +19,8 @@ void printBits(size_t const size, void const* const ptr)
 	puts("");
 }
 
-
-
 int main(int argc, char* argv[]) {
-	
+
 	//std::uint16_t comb = (0xFF << 8| 0x44);
 	//printf("0x%X", comb);
 
@@ -46,18 +44,19 @@ int main(int argc, char* argv[]) {
 
 	
 	
-	//printf("\n\n\n\n\n");
+	//printf("\n\n\n\n\n"); 
+	
 	CPU GBCPU = CPU();
 
 	GBCPU.init();
 
 	//GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\
 	Tetris (World) (Rev 1)\\Tetris (World) (Rev 1).gb");
-	GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\dmg_rom.bin");
-	//GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\Tetris (World) (Rev 1).gb");
+	GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\Tetris (World) (Rev 1).gb");
+	GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
 	GBCPU.stepCPU();
 	
 	return 0;
-
+	
 }
