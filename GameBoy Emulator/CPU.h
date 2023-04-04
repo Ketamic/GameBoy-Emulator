@@ -132,7 +132,10 @@ private:
 
 	//JR
 	void op_0x20();
+
+	void op_0x18();
 	void op_0x28();
+	void op_0x38();
 
 	void op_0x06();
 	void op_0x08();

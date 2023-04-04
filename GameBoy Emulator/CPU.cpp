@@ -58,7 +58,15 @@ void CPU::stepCPU() {
 
 		
 		printf("\nVRAM 0x8010: %X", memory.read(0x8010));
-		printf("\nVRAM 0x8012: %X", memory.read(0x8012));
+		printf("\nVRAM 0x8020: %X", memory.read(0x8020));
+
+		printf("\nVRAM 0x8190: %X", memory.read(0x8190));
+		printf("\nVRAM 0x8191: %X", memory.read(0x8191));
+		printf("\nVRAM 0x8192: %X", memory.read(0x8192));
+		printf("\nVRAM 0x8193: %X", memory.read(0x8193));
+		printf("\nVRAM 0x8194: %X", memory.read(0x8194));
+		printf("\nVRAM 0x8195: %X", memory.read(0x8195));
+		printf("\nVRAM 0x8196: %X", memory.read(0x8196));
 		//this->*(opcode_map.find(0x00)->second)(this);
 		++PC;
 

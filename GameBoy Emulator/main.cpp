@@ -4,6 +4,7 @@
 
 #include "CPU.h"
 
+// Debugging function
 void printBits(size_t const size, void const* const ptr)
 {
 	unsigned char* b = (unsigned char*)ptr;
@@ -19,11 +20,35 @@ void printBits(size_t const size, void const* const ptr)
 	puts("");
 }
 
+// Utility function that returns the exact bit asked for, mostly useful for the 16-bit opcodes
+std::uint8_t GetBit(uint8_t number, int bit) {
+	return (number >> bit) & 1U;
+}
+
+std::uint8_t SetBit(std::uint8_t number, int n, int x) {
+	return number ^ (-x ^ number) & (1UL << n);
+}
+
+
 int main(int argc, char* argv[]) {
 
 	//std::uint16_t comb = (0xFF << 8| 0x44);
 	//printf("0x%X", comb);
+	//uint8_t A = 0b10101011;
+	//uint8_t B = 0b10101011;
+	//uint8_t C = 0b10101010;
+	//A = (A << 1) | (A >> 7);
+	//uint8_t bit7 = (C, 7);
+	//C <<= 1;
+	//C = SetBit(C, 0, 0);
+	//A = (A >> 7);
+	//B = (B << 1);
+	
+	//printBits(sizeof(A), &A);
+	//printBits(sizeof(A), &B);
+	//printBits(sizeof(C), &C);
 
+	//printBits(sizeof(A), &A);
 	/*
 	uint16_t a = 0b1111111100000000;
 	uint8_t msb = (a >> 8);

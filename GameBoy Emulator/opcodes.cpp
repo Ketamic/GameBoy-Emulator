@@ -206,9 +206,25 @@ void CPU::op_0x20() {
 	}
 }
 
+void CPU::op_0x18() {
+	std::int8_t s8 = (std::int8_t)GetImmediateOperand();
+	PC += s8;
+}
+
 // JR Z, s8 - If the Z flag is 1, jump s8 steps from the current address stored in the program counter (PC). If not, the instruction following the current JP instruction is executed (as usual).
 void CPU::op_0x28() {
 	if (F.ZERO_FLAG == 1) {
+		std::int8_t s8 = (std::int8_t)GetImmediateOperand();
+		PC += s8;
+	}
+	else {
+		++PC;
+	}
+}
+
+//JR C, s8 - If the CY flag is 1, jump s8 steps from the current address stored in the program counter(PC).If not, the instruction following the current JP instruction is executed(as usual).
+void CPU::op_0x38() {
+	if (F.CARRY_FLAG == 1) {
 		std::int8_t s8 = (std::int8_t)GetImmediateOperand();
 		PC += s8;
 	}
@@ -543,11 +559,13 @@ void CPU::op_0xFE() {
 
 // RL
 
+// RLCA
 void CPU::op_0x07() {
 	A = (A << 1) | (A >> 7);
 	F.ZERO_FLAG = 0; F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG =  0; F.CARRY_FLAG = (A & 0x01);
 }
 
+// RLA
 void CPU::op_0x17() {
 	uint8_t bit7 = GetBit(A, 7);
 	A = A << 1;
@@ -555,6 +573,7 @@ void CPU::op_0x17() {
 	F.ZERO_FLAG = 0; F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = bit7;
 }
 
+// RET
 void CPU::op_0xC9() {
 	PC = StackPop();
 }
@@ -598,7 +617,7 @@ void CPU::init_opcodes() {
 
 	Opcodes[0x0E] = &CPU::op_0x0E;
 	Opcodes[0x1E] = &CPU::op_0x1E;
-	Opcodes[0x1E] = &CPU::op_0x2E;
+	Opcodes[0x2E] = &CPU::op_0x2E;
 	Opcodes[0x3E] = &CPU::op_0x3E;
 	Opcodes[0x06] = &CPU::op_0x06;
 
@@ -632,6 +651,8 @@ void CPU::init_opcodes() {
 
 	// JR
 	Opcodes[0x20] = &CPU::op_0x20;
+
+	Opcodes[0x18] = &CPU::op_0x18;
 	Opcodes[0x28] = &CPU::op_0x28;
 
 	// INC
