@@ -11,7 +11,7 @@ std::uint8_t CPU::SetBit(std::uint8_t number, int n, int x) {
 
 // BIT
 void CPU::op_0xCB7C() {
-	F.ZERO_FLAG = GetBit(H, 7);
+	F.ZERO_FLAG = !GetBit(H, 7);
 }
 
 // RL
@@ -24,9 +24,6 @@ void CPU::op_0xCB11() {
 	F.HALF_CARRY_FLAG = 0;
 	F.CARRY_FLAG = bit7;
 }
-
-
-
 
 void CPU::init_opcodes16() {
 	// BIT

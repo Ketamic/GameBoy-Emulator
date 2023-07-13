@@ -9,6 +9,11 @@ void CPU::init() {
 	//init_registers();
 	init_opcodes();
 	init_opcodes16();
+
+	F.CARRY_FLAG = 0;
+	F.HALF_CARRY_FLAG = 0;
+	F.SUBTRACT_FLAG = 0;
+	F.ZERO_FLAG = 0;
 	//memory.init();
 }
 
@@ -28,11 +33,27 @@ void printBits(size_t const size, void const* const ptr)
 	puts("");
 } */
 
+/*
+	TODO:
+	
+	Fix AF register
+	Figure out why Half carry flag is being enabled (Could be related to AF flag)
+*/
+
 void CPU::stepCPU() {
+	std::string n;
+	std::cin >> n;
+	bool logging_flag = (n == "log");
+
+	if (logging_flag) {
+		std::ofstream logging_file("opcodes.log")
+	}
+
 	int xyzzy = 0;
 	while (true) {
-		printf("\n\nOPCODE: 0x%X\n\n", (memory.read(PC)));
+		printf("\n\nNEXT OPCODE: 0x%X\n\n", (memory.read(PC)));
 		printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X\n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
+		printf("CARRY: %d   HALF-CARRY: %d   SUBTRACT: %d   ZERO: %d\n", F.CARRY_FLAG, F.HALF_CARRY_FLAG, F.SUBTRACT_FLAG, F.ZERO_FLAG);
 		//printf(" 0xFF44 = %X \n", memory.read(0xFF44));
 		/*
 		if (memory.read(PC) == 0xCD) {
@@ -51,22 +72,21 @@ void CPU::stepCPU() {
 
 
 		//std::cin.get();
-		if (xyzzy == 0) { // Run X amount of cycles
+		if (xyzzy == 0 && logging_flag == false) { // Run X amount of cycles
 			std::cin >> xyzzy;
 		}
+		if
 		--xyzzy;
-
 		
-		printf("\nVRAM 0x8010: %X", memory.read(0x8010));
-		printf("\nVRAM 0x8020: %X", memory.read(0x8020));
+		//printf("\nVRAM 0x8020: %X", memory.read(0x8020));
 
-		printf("\nVRAM 0x8190: %X", memory.read(0x8190));
-		printf("\nVRAM 0x8191: %X", memory.read(0x8191));
-		printf("\nVRAM 0x8192: %X", memory.read(0x8192));
-		printf("\nVRAM 0x8193: %X", memory.read(0x8193));
-		printf("\nVRAM 0x8194: %X", memory.read(0x8194));
-		printf("\nVRAM 0x8195: %X", memory.read(0x8195));
-		printf("\nVRAM 0x8196: %X", memory.read(0x8196));
+		//printf("\nVRAM 0x8190: %X", memory.read(0x8190));
+		//printf("\nVRAM 0x8191: %X", memory.read(0x8191));
+		//printf("\nVRAM 0x8192: %X", memory.read(0x8192));
+		//printf("\nVRAM 0x8193: %X", memory.read(0x8193));
+		//printf("\nVRAM 0x8194: %X", memory.read(0x8194));
+		//printf("\nVRAM 0x8195: %X", memory.read(0x8195));
+		//printf("\nVRAM 0x8196: %X", memory.read(0x8196));
 		//this->*(opcode_map.find(0x00)->second)(this);
 		++PC;
 

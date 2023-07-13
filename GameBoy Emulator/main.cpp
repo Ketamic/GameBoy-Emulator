@@ -22,7 +22,7 @@ void printBits(size_t const size, void const* const ptr)
 
 // Utility function that returns the exact bit asked for, mostly useful for the 16-bit opcodes
 std::uint8_t GetBit(uint8_t number, int bit) {
-	return (number >> bit) & 1U;
+	return number << bit;
 }
 
 std::uint8_t SetBit(std::uint8_t number, int n, int x) {
@@ -36,11 +36,9 @@ int main(int argc, char* argv[]) {
 	//printf("0x%X", comb);
 	//uint8_t A = 0b10101011;
 	//uint8_t B = 0b10101011;
-	//uint8_t C = 0b10101010;
+	//uint8_t C = 0b11111110;
 	//A = (A << 1) | (A >> 7);
-	//uint8_t bit7 = (C, 7);
-	//C <<= 1;
-	//C = SetBit(C, 0, 0);
+	//printf("%d", GetBit(C, 0));
 	//A = (A >> 7);
 	//B = (B << 1);
 	
@@ -81,6 +79,7 @@ int main(int argc, char* argv[]) {
 	GBCPU.loadROM("C:\\Users\\Cedar\\Downloads\\dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
 	GBCPU.stepCPU();
+	
 	
 	return 0;
 	
