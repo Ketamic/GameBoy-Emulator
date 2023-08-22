@@ -1,4 +1,6 @@
 #include "CPU.h"
+#include <string>
+#include <iostream>
 
 void CPU::StackPush(uint16_t value) {
 	--SP;
@@ -151,7 +153,7 @@ void CPU::op_0x0E() {
 }
 
 //LD, E
-void CPU::op_0x1E() {
+void CPU::op_0x1E() { 
 	E = GetImmediateOperand();
 }
 
@@ -160,9 +162,12 @@ void CPU::op_0x2E() {
 	L = GetImmediateOperand();
 }
 
-// LD< A
+// LD, A
 void CPU::op_0x3E() {
+	printf("VALUE OF A IS 0x%X BEFORE CHANGING", A);
 	A = GetImmediateOperand();
+	printf("VALUE OF A IS 0x%X AFTER CHANGING", A);
+
 }
 
 //LD, B - Load the 8-bit immediate operand d8 into register B.
@@ -485,7 +490,7 @@ void CPU::op_0xCD() {
 	--SP;	
 	memory.write(--SP, PC >> 8);
 	memory.write(SP, PC & 0xFF);
-	PC = imm - 1; // For some reason one is being added onto the imm, i have zero idea why as of right now
+	PC = imm; //- 1; // For some reason one is being added onto the imm, i have zero idea why as of right now
 }
 
 // RST - Unconditional function call to the absolute fixed address defined by the opcode

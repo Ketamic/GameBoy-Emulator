@@ -3,6 +3,8 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
+#include <string>
+#include <iomanip>
 
 void CPU::init() {
 	printf("initializing...");
@@ -44,16 +46,22 @@ void CPU::stepCPU() {
 	std::string n;
 	std::cin >> n;
 	bool logging_flag = (n == "log");
-
-	if (logging_flag) {
-		std::ofstream logging_file("opcodes.log")
-	}
+	std::ofstream logging_file("opcodes.log");
 
 	int xyzzy = 0;
 	while (true) {
-		printf("\n\nNEXT OPCODE: 0x%X\n\n", (memory.read(PC)));
-		printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X\n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
-		printf("CARRY: %d   HALF-CARRY: %d   SUBTRACT: %d   ZERO: %d\n", F.CARRY_FLAG, F.HALF_CARRY_FLAG, F.SUBTRACT_FLAG, F.ZERO_FLAG);
+		if (logging_flag == false) {
+			printf("\n\nNEXT OPCODE: 0x%X\n\n", (memory.read(PC)));
+			printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X\n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
+			printf("CARRY: %d   HALF-CARRY: %d   SUBTRACT: %d   ZERO: %d\n", F.CARRY_FLAG, F.HALF_CARRY_FLAG, F.SUBTRACT_FLAG, F.ZERO_FLAG);
+		} else {
+			logging_file << std::hex << "PC: 0x" << PC << " SP: " << SP << " AF: " << AF << " BC: " << BC << " DE: " << DE << " HL: " << HL << "\n";
+			logging_file << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n\n";
+
+			logging_file << "HRAM: " << "\n FFFE: " << +memory.read(0xFFFE) << +memory.read(0xFFFD) << "\n FFFC: " << +memory.read(0xFFFC) << +memory.read(0xFFFB) << "\n FFFA: " << +memory.read(0xFFFA) << +memory.read(0xFFF9) << "\n\n";
+
+			logging_file << "OPCODE: " << std::uppercase << std::hex << +memory.read(PC) << "\n";
+		}
 		//printf(" 0xFF44 = %X \n", memory.read(0xFF44));
 		/*
 		if (memory.read(PC) == 0xCD) {
@@ -75,7 +83,6 @@ void CPU::stepCPU() {
 		if (xyzzy == 0 && logging_flag == false) { // Run X amount of cycles
 			std::cin >> xyzzy;
 		}
-		if
 		--xyzzy;
 		
 		//printf("\nVRAM 0x8020: %X", memory.read(0x8020));
@@ -93,6 +100,7 @@ void CPU::stepCPU() {
 		//temporary fix to LY register because gfx aren't setup yet
 		memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
 	}
+
 }
 
 // Get the size of a file
