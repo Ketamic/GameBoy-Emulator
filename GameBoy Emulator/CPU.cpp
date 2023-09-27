@@ -59,7 +59,7 @@ void CPU::stepCPU() {
 			logging_file << std::hex << "PC: 0x" << PC << " SP: " << SP << " AF: " << AF << " BC: " << BC << " DE: " << DE << " HL: " << HL << "\n";
 			logging_file << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n\n";
 
-			logging_file << "HRAM: " << "\n FFFE: " << +memory.read(0xFFFE) << +memory.read(0xFFFD) << "\n FFFC: " << +memory.read(0xFFFC) << +memory.read(0xFFFB) << "\n FFFA: " << +memory.read(0xFFFA) << +memory.read(0xFFF9) << "\n\n";
+			logging_file << "HRAM: " << "\n FFFE: " << +memory.read(0xFFFF) << +memory.read(0xFFFE) << "\n FFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC) << "\n FFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n\n";
 
 			logging_file << "OPCODE: " << std::uppercase << std::hex << +memory.read(PC) << "\n";
 		}
