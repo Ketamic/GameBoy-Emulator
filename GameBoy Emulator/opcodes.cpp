@@ -489,8 +489,7 @@ void CPU::op_0xF3() {
 // CALL a16
 void CPU::op_0xCD() {
 	uint16_t imm = GetImmediateOperands();
-	memory.write(--SP, PC >> 8);
-	memory.write(--SP, PC & 0xFF);
+	StackPush(PC);
 	PC = imm - 1; // For some reason one is being added onto the imm, i have zero idea why as of right now
 }
 
