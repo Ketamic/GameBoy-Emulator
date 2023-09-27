@@ -53,24 +53,12 @@ private:
 	//std::uint16_t SP = 0xE000;
 	std::uint16_t SP = 0x0000;
 	// Program Counter
-	//std::uint16_t PC = 0x0100;
-	std::uint16_t PC = 0x0000;
-
-	// Flags
-	/*std::uint8_t ZERO_FLAG = 0x00;
-	std::uint8_t SUBTRACT_FLAG	 = 0x00;
-	std::uint8_t HALF_CARRY_FLAG = 0x00; // Check if there is overflow from the lower nibble to the upper nibble
-	std::uint8_t CARRY_FLAG		 = 0x00; */
+	std::uint16_t PC = 0x0000; // can be set to 0x0100 to run without a boot rom, or 0x0000 to run with one
 
 	// Interupts
 	bool HALT = 0;
 	bool INTERUPT_MASTER_ENABLE = 0;
 
-	//Memory
-	//std::uint8_t ROM_BANK00[0x3FFF] = {};
-
-	//
-	//std::uint8_t memory[0xFFFF] = {};
 	Memory memory = Memory();
 
 	typedef void (CPU::* Opcode)(void);

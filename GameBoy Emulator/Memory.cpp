@@ -8,7 +8,7 @@ void Memory::init() {
 } 
 */
 
-// Read from memory
+// Reads a value from memory at the specified address
 uint8_t Memory::read(uint16_t address) {
 
 	if (address < 0x3FFF) {
@@ -84,7 +84,7 @@ void Memory::write(uint16_t address, uint8_t value) {
 		OAM[(0xFE9F - address)] = value;
 	}
 	else if (address <= 0xFEFF) {
-		return; // This shoudln't ever happen but its just here for consistency -- writing to it does nothing
+		return; // This shouldn't ever happen but its just here for consistency -- writing to it does nothing
 	}
 	else if (address <= 0xFF7F) {
 		if (address <= 0xFF43) {

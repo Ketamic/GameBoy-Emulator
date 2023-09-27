@@ -50,11 +50,12 @@ void CPU::stepCPU() {
 
 	int xyzzy = 0;
 	while (true) {
+		// If the user doesn't want to log, everything will just be printed to the screen
 		if (logging_flag == false) {
 			printf("\n\nNEXT OPCODE: 0x%X\n\n", (memory.read(PC)));
 			printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X\n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
 			printf("CARRY: %d   HALF-CARRY: %d   SUBTRACT: %d   ZERO: %d\n", F.CARRY_FLAG, F.HALF_CARRY_FLAG, F.SUBTRACT_FLAG, F.ZERO_FLAG);
-		} else {
+		} else { // If the user does want to log, it will be logged to opcodes.log
 			logging_file << std::hex << "PC: 0x" << PC << " SP: " << SP << " AF: " << AF << " BC: " << BC << " DE: " << DE << " HL: " << HL << "\n";
 			logging_file << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n\n";
 
@@ -62,39 +63,16 @@ void CPU::stepCPU() {
 
 			logging_file << "OPCODE: " << std::uppercase << std::hex << +memory.read(PC) << "\n";
 		}
-		//printf(" 0xFF44 = %X \n", memory.read(0xFF44));
-		/*
-		if (memory.read(PC) == 0xCD) {
-			
-			xyzzy = 0;
-		}
-		*/
-		// If there is a 16-bit opcode then pull from the 16-bit opcode map
-		//if (memory.read(PC == 0xCB)) {
 
-		//}
-		//else { // If it is not then pull from the normal map
-			// Get the Opcode from the Opcode map
-			(this->*Opcodes[memory.read(PC)])();
-		//}
+		(this->*Opcodes[memory.read(PC)])();
 
-
-		//std::cin.get();
-		if (xyzzy == 0 && logging_flag == false) { // Run X amount of cycles
+		// Run X amount of cycles if the user isn't logging
+		if (xyzzy == 0 && logging_flag == false) {
 			std::cin >> xyzzy;
 		}
 		--xyzzy;
 		
-		//printf("\nVRAM 0x8020: %X", memory.read(0x8020));
-
-		//printf("\nVRAM 0x8190: %X", memory.read(0x8190));
-		//printf("\nVRAM 0x8191: %X", memory.read(0x8191));
-		//printf("\nVRAM 0x8192: %X", memory.read(0x8192));
-		//printf("\nVRAM 0x8193: %X", memory.read(0x8193));
-		//printf("\nVRAM 0x8194: %X", memory.read(0x8194));
-		//printf("\nVRAM 0x8195: %X", memory.read(0x8195));
-		//printf("\nVRAM 0x8196: %X", memory.read(0x8196));
-		//this->*(opcode_map.find(0x00)->second)(this);
+		// Increment Program Counter so the CPU keeps moving foward
 		++PC;
 
 		//temporary fix to LY register because gfx aren't setup yet
@@ -152,6 +130,8 @@ void CPU::loadROM(char const* path)
 	//std::cin.get();
 	delete[]fileBuf;
 	fclose(file);   // Almost forgot this 
+
+	std::cout << "ROM successfully loaded!" << std::endl;
 
 	return;
 }

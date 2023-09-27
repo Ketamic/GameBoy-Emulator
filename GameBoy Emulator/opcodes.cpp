@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 
+// Pushes a value to the stack
 void CPU::StackPush(uint16_t value) {
 	--SP;
 	memory.write(SP, (value >> 8)); // MSB
@@ -9,6 +10,7 @@ void CPU::StackPush(uint16_t value) {
 	memory.write(SP, value & ((1 << 8) - 1)); // LSB
 }
 
+// Pops a value off the stack and returns it
 uint16_t CPU::StackPop() {
 	uint8_t pt1 = memory.read(SP++);
 	uint8_t pt2 = memory.read(SP++);
@@ -16,8 +18,8 @@ uint16_t CPU::StackPop() {
 }
 
 std::uint16_t CPU::GetImmediateOperands() {
-	//	 LSB			   MSB
 	PC += 2; // Keeps from reading immedate operand once the opcode is done
+	//		LSB					 MSB
 	return memory.read(PC - 1) | (memory.read(PC) << 8);
 }
 
@@ -487,10 +489,9 @@ void CPU::op_0xF3() {
 // CALL a16
 void CPU::op_0xCD() {
 	uint16_t imm = GetImmediateOperands();
-	--SP;	
 	memory.write(--SP, PC >> 8);
-	memory.write(SP, PC & 0xFF);
-	PC = imm; //- 1; // For some reason one is being added onto the imm, i have zero idea why as of right now
+	memory.write(--SP, PC & 0xFF);
+	PC = imm - 1; // For some reason one is being added onto the imm, i have zero idea why as of right now
 }
 
 // RST - Unconditional function call to the absolute fixed address defined by the opcode
@@ -748,4 +749,3 @@ void CPU::init_opcodes() {
 	//CB 16-Bit opcodes
 	Opcodes[0xCB] = &CPU::op_0xCB;
 }
-
