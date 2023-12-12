@@ -2,6 +2,12 @@
 #include <cstdint>
 #include <string>
 #include <unordered_map>
+#include <fstream>
+#include <iostream>
+#include <stdio.h>
+#include <iomanip>
+#include <sstream>
+
 #include "Memory.h"
 #include "Flags.h"
 
@@ -9,7 +15,7 @@ class CPU
 {
 public:
 	void init();
-	void stepCPU();
+	std::string stepCPU(int flag);
 	void loadROM(char const* path);
 
 private:

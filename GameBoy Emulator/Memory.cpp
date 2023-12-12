@@ -1,5 +1,4 @@
 #include "Memory.h"
-#include <stdio.h>
 
 // Initialize values in memory that would usually be set by the boot ROM
 /*

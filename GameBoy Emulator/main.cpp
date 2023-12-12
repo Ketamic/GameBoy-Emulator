@@ -39,7 +39,23 @@ int main(int argc, char* argv[]) {
 	GBCPU.loadROM("Tetris (World) (Rev 1).gb");
 	GBCPU.loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
-	GBCPU.stepCPU();
+	std::string n;
+	printf("Would you like to log? (y/n) ");
+	std::cin >> n;
+	bool logging_flag = (n == "y");
+
+	int xyzzy = 0;
+
+	while (true) {
+
+		printf("%s", GBCPU.stepCPU(logging_flag).c_str());
+
+		// Run X amount of cycles if the user isn't logging
+		if (xyzzy == 0 && logging_flag == false) {
+			std::cin >> xyzzy;
+		}
+		--xyzzy;
+	}
 	
 	
 	return 0;
