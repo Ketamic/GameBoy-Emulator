@@ -44,11 +44,19 @@ int main(int argc, char* argv[]) {
 	std::cin >> n;
 	bool logging_flag = (n == "y");
 
+	std::ofstream logging_file;
+	logging_file.open("opcodes.log");
+
 	int xyzzy = 0;
 
 	while (true) {
 
-		printf("%s", GBCPU.stepCPU(logging_flag).c_str());
+		if (logging_flag) {
+			logging_file <<	GBCPU.stepCPU(logging_flag);
+		}
+		else {
+			printf("%s", GBCPU.stepCPU(logging_flag).c_str());
+		}
 
 		// Run X amount of cycles if the user isn't logging
 		if (xyzzy == 0 && logging_flag == false) {

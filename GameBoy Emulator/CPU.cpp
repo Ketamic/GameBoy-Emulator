@@ -20,6 +20,12 @@ void CPU::init() {
 	Figure out why Half carry flag is being enabled (Could be related to AF flag)
 */
 
+std::string padRegister(uint8_t value) {
+	std::stringstream formatted;
+	formatted << std::setw(4) << std::setfill('0') << value;
+	return formatted.str().c_str();
+}
+
 std::string CPU::stepCPU(int log) {
 
 	// starting my timer
@@ -32,9 +38,9 @@ std::string CPU::stepCPU(int log) {
 	output << "\nOPCODE: 0x" << std::hex << unsigned int(memory.read(PC)) << "\n";
 
 	// Adding all of 
-	output << std::setfill('0') << std::setw(5) << "PC: 0x" << PC; output << std::setfill('0') << std::setw(5) << " SP: 0x" << SP;
-	output << std::setfill('0') << std::setw(5) << " AF: 0x" << AF; output << std::setfill('0') << std::setw(5) << " PC: 0x" << BC;
-	output << std::setfill('0') << std::setw(5) << " PC: 0x" << DE; output << std::setfill('0') << std::setw(5) <<  "PC: 0x" << HL << "\n";
+	output << "PC: 0x" << padRegister(PC); output << " SP: 0x" << padRegister(SP);
+	output << " AF: 0x" << padRegister(PC); output << " BC: 0x" << padRegister(BC);
+	output << " DE: 0x" << padRegister(DE); output << " HL: 0x" << padRegister(PC) << "\n";
 
 	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
 
