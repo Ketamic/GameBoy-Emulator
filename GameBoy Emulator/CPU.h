@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <iomanip>
 #include <sstream>
+#include <chrono>
 
 #include "Memory.h"
 #include "Flags.h"

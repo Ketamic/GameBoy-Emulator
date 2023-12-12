@@ -22,17 +22,21 @@ void CPU::init() {
 
 std::string CPU::stepCPU(int log) {
 
+	// starting my timer
+	auto start_timer = std::chrono::high_resolution_clock::now();
+
 	// outputting a string so that way main can print or log it to a file
 	std::stringstream output;
 
 	// std::hex only works with int so I have to cast my uint8_t to an unsigned int
 	output << "\nOPCODE: 0x" << std::hex << unsigned int(memory.read(PC)) << "\n";
 
+	// Adding all of 
 	output << std::setfill('0') << std::setw(5) << "PC: 0x" << PC; output << std::setfill('0') << std::setw(5) << " SP: 0x" << SP;
 	output << std::setfill('0') << std::setw(5) << " AF: 0x" << AF; output << std::setfill('0') << std::setw(5) << " PC: 0x" << BC;
 	output << std::setfill('0') << std::setw(5) << " PC: 0x" << DE; output << std::setfill('0') << std::setw(5) <<  "PC: 0x" << HL << "\n";
 
-	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n\n";
+	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
 
 
 	(this->*Opcodes[memory.read(PC)])();
@@ -43,7 +47,10 @@ std::string CPU::stepCPU(int log) {
 	//temporary fix to LY register because gfx aren't setup yet
 	memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
 
-	//printf("HELP2 %s \n", output.str().c_str());
+	auto stop_timer = std::chrono::high_resolution_clock::now();
+
+	std::chrono::microseconds duration_timer = std::chrono::duration_cast<std::chrono::microseconds>(stop_timer - start_timer);
+	printf("This step took %d micrsoseconds\n\n", duration_timer.count());
 
 	return output.str();
 
