@@ -56,7 +56,6 @@ private:
 	};
 
 	// Stack Pointer - Initialized to the top of the WRAM
-	//std::uint16_t SP = 0xE000;
 	std::uint16_t SP = 0x0000;
 	// Program Counter
 	std::uint16_t PC = 0x0000; // can be set to 0x0100 to run without a boot rom, or 0x0000 to run with one

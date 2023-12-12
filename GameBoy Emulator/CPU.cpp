@@ -14,22 +14,6 @@ void CPU::init() {
 }
 
 /*
-void printBits(size_t const size, void const* const ptr)
-{
-	unsigned char* b = (unsigned char*)ptr;
-	unsigned char byte;
-	int i, j;
-
-	for (i = size - 1; i >= 0; i--) {
-		for (j = 7; j >= 0; j--) {
-			byte = (b[i] >> j) & 1;
-			printf("%u", byte);
-		}
-	}
-	puts("");
-} */
-
-/*
 	TODO:
 	
 	Fix AF register
@@ -37,19 +21,6 @@ void printBits(size_t const size, void const* const ptr)
 */
 
 std::string CPU::stepCPU(int log) {
-	// If the user doesn't want to log, everything will just be printed to the screen
-	/*if (log == false) {
-		printf("\n\nNEXT OPCODE: 0x%X\n\n", (memory.read(PC)));
-		printf("PC: 0x%X	SP: 0x%X\n AF: 0x%X   BC: 0x%X   DE: 0x%X   HL: 0x%X   LY: 0x%X\n", PC, SP, AF, BC, DE, HL, memory.read(0xFF44));
-		printf("CARRY: %d   HALF-CARRY: %d   SUBTRACT: %d   ZERO: %d\n", F.CARRY_FLAG, F.HALF_CARRY_FLAG, F.SUBTRACT_FLAG, F.ZERO_FLAG);
-	} else { // If the user does want to log, it will be logged to opcodes.log
-		logging_file << std::hex << "PC: 0x" << PC << " SP: " << SP << " AF: " << AF << " BC: " << BC << " DE: " << DE << " HL: " << HL << "\n";
-		logging_file << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n\n";
-
-		logging_file << "HRAM: " << "\n FFFE: " << +memory.read(0xFFFF) << +memory.read(0xFFFE) << "\n FFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC) << "\n FFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n\n";
-
-		logging_file << "OPCODE: " << std::uppercase << std::hex << +memory.read(PC) << "\n";
-	} */
 
 	// outputting a string so that way main can print or log it to a file
 	std::stringstream output;
@@ -113,11 +84,6 @@ void CPU::loadROM(char const* path)
 
 	// Read the file in to the buffer
 	fread(fileBuf, fileSize, 1, file);
-
-	/* Now that we have the entire file buffered, we can take a look at some binary infomation
-	// Lets take a look in hexadecimal
-	for (int i = 0; i < 100; i++)
-		printf("%X ", fileBuf[i]); */
 
 	// Loading the ROM into memory
 	for (int i = 0; i < fileSize; ++i) {

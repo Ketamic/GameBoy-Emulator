@@ -1,11 +1,6 @@
 #include "Memory.h"
 
 // Initialize values in memory that would usually be set by the boot ROM
-/*
-void Memory::init() {
-
-} 
-*/
 
 // Reads a value from memory at the specified address
 uint8_t Memory::read(uint16_t address) {
@@ -35,7 +30,7 @@ uint8_t Memory::read(uint16_t address) {
 		return OAM[(0xFE9F - address)];
 	} 
 	else if (address <= 0xFEFF) {
-		return 0x00/*UNUSEABLE[(0xFEFF - address)]*/; // This shoudln't ever happen but its just here for consistency
+		return 0x00; // This shouldn't ever happen but its just here for consistency
 	} 
 	else if (address <= 0xFF7F) {
 		if (address <= 0xFF43) {
