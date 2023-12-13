@@ -29,6 +29,12 @@ std::string padRegister(std::uint16_t value) {
 	return formatted.str();
 }
 
+std::string padMemory(std::uint8_t value) {
+	std::stringstream formatted;
+	formatted << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << value;
+	return formatted.str();
+}
+
 std::string CPU::stepCPU(int log) {
 
 	// starting my timer
@@ -40,7 +46,14 @@ std::string CPU::stepCPU(int log) {
 	// std::hex only works with int so I have to cast my uint8_t to an unsigned int
 	output << "\nOPCODE: 0x" << std::uppercase << std::hex << unsigned int(memory.read(PC)) << "\n";
 
-	// Adding all of 
+	// The + seen near the variables casts them to an int 
+
+	// adding part of the HRAM block to the output
+	output << "HRAM:\n0xFFFE: " << std::uppercase << std::hex << +memory.read(0xFFFF) << +memory.read(0xFFFE);
+	output << "\n0xFFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC);
+	output << "\n0xFFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n";
+
+	// Adding all of the registers to the output
 	output << "PC: 0x" << padRegister(PC); output << " SP: 0x" << padRegister(SP);
 	output << " AF: 0x" << padRegister(AF); output << " BC: 0x" << padRegister(BC);
 	output << " DE: 0x" << padRegister(DE); output << " HL: 0x" << padRegister(HL) << "\n";
@@ -53,7 +66,7 @@ std::string CPU::stepCPU(int log) {
 	// Increment Program Counter so the CPU keeps moving foward
 	++PC;
 
-	//temporary fix to LY register because gfx aren't setup yet
+	// Temporary fix to LY register because gfx isn't setup yet
 	memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
 
 	auto stop_timer = std::chrono::high_resolution_clock::now();
