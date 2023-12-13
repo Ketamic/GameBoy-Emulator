@@ -86,6 +86,7 @@ void CPU::op_0xF0() {
 // LD A, (DE) - Load the 8-bit contents of memory specified by register pair DE into register A.
 void CPU::op_0x1A() {
 	A = memory.read(DE);
+	printf("Memory at DE: %X", memory.read(DE));
 }
 
 // LD A, (a16)

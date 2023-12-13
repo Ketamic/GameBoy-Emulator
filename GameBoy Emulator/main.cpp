@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 	GBCPU.loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
 	std::string n;
-	printf("Would you like to log? (y/n) ");
+	printf("Would you like to log to a file? (y/n) ");
 	std::cin >> n;
 	bool logging_flag = (n == "y");
 
@@ -58,11 +58,14 @@ int main(int argc, char* argv[]) {
 			printf("%s", GBCPU.stepCPU(logging_flag).c_str());
 		}
 
-		// Run X amount of cycles if the user isn't logging
+		// This is rarely used now that I have my file output so I'm just going to comment
+		// this out until I need it again
+		/* Run X amount of cycles if the user isn't logging
 		if (xyzzy == 0 && logging_flag == false) {
 			std::cin >> xyzzy;
 		}
 		--xyzzy;
+		*/
 	}
 	
 	

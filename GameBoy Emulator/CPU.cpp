@@ -4,7 +4,7 @@
 #define PBWIDTH 60
 
 void CPU::init() {
-	printf("initializing...");
+	printf("initializing...\n\n");
 	//init_registers();
 	init_opcodes();
 	init_opcodes16();
@@ -23,10 +23,10 @@ void CPU::init() {
 	Figure out why Half carry flag is being enabled (Could be related to AF flag)
 */
 
-std::string padRegister(uint8_t value) {
+std::string padRegister(std::uint16_t value) {
 	std::stringstream formatted;
-	formatted << std::setw(4) << std::setfill('0') << value;
-	return formatted.str().c_str();
+	formatted << std::uppercase << std::hex << std::setw(4) << std::setfill('0') << value;
+	return formatted.str();
 }
 
 std::string CPU::stepCPU(int log) {
@@ -38,12 +38,12 @@ std::string CPU::stepCPU(int log) {
 	std::stringstream output;
 
 	// std::hex only works with int so I have to cast my uint8_t to an unsigned int
-	output << "\nOPCODE: 0x" << std::hex << unsigned int(memory.read(PC)) << "\n";
+	output << "\nOPCODE: 0x" << std::uppercase << std::hex << unsigned int(memory.read(PC)) << "\n";
 
 	// Adding all of 
 	output << "PC: 0x" << padRegister(PC); output << " SP: 0x" << padRegister(SP);
-	output << " AF: 0x" << padRegister(PC); output << " BC: 0x" << padRegister(BC);
-	output << " DE: 0x" << padRegister(DE); output << " HL: 0x" << padRegister(PC) << "\n";
+	output << " AF: 0x" << padRegister(AF); output << " BC: 0x" << padRegister(BC);
+	output << " DE: 0x" << padRegister(DE); output << " HL: 0x" << padRegister(HL) << "\n";
 
 	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
 
@@ -59,7 +59,7 @@ std::string CPU::stepCPU(int log) {
 	auto stop_timer = std::chrono::high_resolution_clock::now();
 
 	std::chrono::microseconds duration_timer = std::chrono::duration_cast<std::chrono::microseconds>(stop_timer - start_timer);
-	printf("This step took %d micrsoseconds\n\n", duration_timer.count());
+	printf("This step took %d micrsoseconds\n\n", (int)duration_timer.count());
 
 	return output.str();
 }
@@ -109,9 +109,6 @@ void CPU::loadROM(char const* path)
 	// Read the file in to the buffer
 	fread(fileBuf, fileSize, 1, file);
 
-	float progress = 0.0;
-	const int barwidth = 70;
-
 	// Loading the ROM into memory
 	for (int i = 0; i < fileSize; ++i) {
 		// Creates a nice progress bar
@@ -125,7 +122,7 @@ void CPU::loadROM(char const* path)
 	delete[]fileBuf;
 	fclose(file);   // Almost forgot this 
 
-	std::cout << "\nROM successfully loaded!" << std::endl;
+	printf("\nROM successfully loaded!\n\n");
 
 	return;
 }
