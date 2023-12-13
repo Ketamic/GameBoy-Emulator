@@ -1,5 +1,8 @@
 #include "CPU.h"
 
+#define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
+#define PBWIDTH 60
+
 void CPU::init() {
 	printf("initializing...");
 	//init_registers();
@@ -59,7 +62,6 @@ std::string CPU::stepCPU(int log) {
 	printf("This step took %d micrsoseconds\n\n", duration_timer.count());
 
 	return output.str();
-
 }
 
 // Get the size of a file
@@ -71,6 +73,15 @@ long getFileSize(FILE* file)
 	lEndPos = ftell(file);
 	fseek(file, lCurPos, 0);
 	return lEndPos;
+}
+
+// Print an amount of progress as a nice looking bar
+void printProgress(double percentage) {
+	int val = (int)(percentage * 100);
+	int lpad = (int)(percentage * PBWIDTH);
+	int rpad = PBWIDTH - lpad;
+	printf("\r%3d%% [%.*s%*s]", val, lpad, PBSTR, rpad, "");
+	fflush(stdout);
 }
 
 void CPU::loadROM(char const* path)
@@ -98,8 +109,15 @@ void CPU::loadROM(char const* path)
 	// Read the file in to the buffer
 	fread(fileBuf, fileSize, 1, file);
 
+	float progress = 0.0;
+	const int barwidth = 70;
+
 	// Loading the ROM into memory
 	for (int i = 0; i < fileSize; ++i) {
+		// Creates a nice progress bar
+		printProgress((i + 1.0) / fileSize);
+
+		// actually writes the data to the filebuf
 		memory.write(i, fileBuf[i]);
 	}
 
@@ -107,7 +125,7 @@ void CPU::loadROM(char const* path)
 	delete[]fileBuf;
 	fclose(file);   // Almost forgot this 
 
-	std::cout << "ROM successfully loaded!" << std::endl;
+	std::cout << "\nROM successfully loaded!" << std::endl;
 
 	return;
 }

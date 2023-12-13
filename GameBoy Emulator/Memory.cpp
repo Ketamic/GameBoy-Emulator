@@ -52,7 +52,7 @@ uint8_t Memory::read(uint16_t address) {
 }
 
 void Memory::write(uint16_t address, uint8_t value) {
-	printf("Writing 0x%X to 0x%X\n", value, address);
+	//printf("Writing 0x%X to 0x%X\n", value, address);
 	if (address < 0x3FFF) {
 		ROM_0[address] = value;
 	}
