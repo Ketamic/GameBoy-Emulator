@@ -574,7 +574,7 @@ void CPU::op_0x07() {
 void CPU::op_0x17() {
 	uint8_t bit7 = GetBit(A, 7);
 	A = A << 1;
-	A = SetBit(A, 0, bit7);
+	A = SetBit(A, 0, F.CARRY_FLAG);
 	F.ZERO_FLAG = 0; F.SUBTRACT_FLAG = 0; F.HALF_CARRY_FLAG = 0; F.CARRY_FLAG = bit7;
 }
 

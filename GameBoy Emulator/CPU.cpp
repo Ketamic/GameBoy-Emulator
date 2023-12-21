@@ -54,9 +54,9 @@ std::string CPU::stepCPU(int log) {
 	output << "\n0xFFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n";
 
 	// Adding all of the registers to the output
-	output << "PC: 0x" << padRegister(PC); output << " SP: 0x" << padRegister(SP);
-	output << " AF: 0x" << padRegister(AF); output << " BC: 0x" << padRegister(BC);
-	output << " DE: 0x" << padRegister(DE); output << " HL: 0x" << padRegister(HL) << "\n";
+	output << "PC: 0x" << padRegister(PC); output << "  SP: 0x" << padRegister(SP);
+	output << "  AF: 0x" << padRegister(AF); output << "  BC: 0x" << padRegister(BC);
+	output << "  DE: 0x" << padRegister(DE); output << "  HL: 0x" << padRegister(HL) << "\n";
 
 	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
 
