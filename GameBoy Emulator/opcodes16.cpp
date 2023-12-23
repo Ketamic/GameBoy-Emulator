@@ -1,14 +1,5 @@
 #include "CPU.h"
 
-// Utility function that returns the exact bit asked for, mostly useful for the 16-bit opcodes
-std::uint8_t CPU::GetBit(uint8_t number, int bit) {
-	return (number >> bit) & 1U;
-}
-
-std::uint8_t CPU::SetBit(std::uint8_t number, int n, int x) {
-	return number ^ (-x ^ number) & (1UL << n);
-}
-
 // BIT
 void CPU::op_0xCB7C() {
 	F.ZERO_FLAG = !GetBit(H, 7);
@@ -18,7 +9,7 @@ void CPU::op_0xCB7C() {
 
 // RL
 void CPU::op_0xCB11() {
-	uint8_t bit7 = (C, 7);
+	uint8_t bit7 = GetBit(C, 7);
 	C <<= 1;
 	C = SetBit(C, 0, F.CARRY_FLAG);
 	F.ZERO_FLAG = (C == 0x00); 

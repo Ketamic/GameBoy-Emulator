@@ -32,18 +32,17 @@ std::uint8_t SetBit(std::uint8_t number, int n, int x) {
 
 int main(int argc, char* argv[]) {
 	
-	CPU GBCPU = CPU();
+	CPU* GBCPU = new CPU();
 
-	GBCPU.init();
+	GBCPU->init();
 
-	GBCPU.loadROM("Tetris (World) (Rev 1).gb");
-	GBCPU.loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
+	GBCPU->loadROM("Tetris (World) (Rev 1).gb");
+	GBCPU->loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
 	std::string n;
 	printf("Would you like to log to a file? (y/n) ");
 	std::cin >> n;
 	bool logging_flag = (n == "y");
-
 	std::ofstream logging_file;
 	logging_file.open("opcodes.log");
 
@@ -52,10 +51,10 @@ int main(int argc, char* argv[]) {
 	while (true) {
 
 		if (logging_flag) {
-			logging_file <<	GBCPU.stepCPU(logging_flag);
+			logging_file <<	GBCPU->stepCPU(logging_flag);
 		}
 		else {
-			printf("%s", GBCPU.stepCPU(logging_flag).c_str());
+			printf("%s", GBCPU->stepCPU(logging_flag).c_str());
 		}
 
 		// This is rarely used now that I have my file output so I'm just going to comment

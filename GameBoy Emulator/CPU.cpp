@@ -13,15 +13,16 @@ void CPU::init() {
 	F.HALF_CARRY_FLAG = 0;
 	F.SUBTRACT_FLAG = 0;
 	F.ZERO_FLAG = 0;
-	//memory.init();
 }
 
-/*
-	TODO:
-	
-	Fix AF register
-	Figure out why Half carry flag is being enabled (Could be related to AF flag)
-*/
+// Utility function that returns the exact bit asked for, mostly useful for the 16-bit opcodes
+std::uint8_t CPU::GetBit(uint8_t number, int bit) {
+	return (number >> bit) & 1U;
+}
+
+std::uint8_t CPU::SetBit(std::uint8_t number, int n, int x) {
+	return number ^ (-x ^ number) & (1UL << n);
+}
 
 std::string padRegister(std::uint16_t value) {
 	std::stringstream formatted;
@@ -59,7 +60,6 @@ std::string CPU::stepCPU(int log) {
 	output << "  DE: 0x" << padRegister(DE); output << "  HL: 0x" << padRegister(HL) << "\n";
 
 	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
-
 
 	(this->*Opcodes[memory.read(PC)])();
 
@@ -108,10 +108,12 @@ void CPU::loadROM(char const* path)
 
 	// Open the file in binary mode using the "rb" format string
 	// This also checks if the file exists and/or can be opened for reading correctly
-	if ((file =	fopen(filePath, "rb")) == NULL)
+	if ((file = fopen(filePath, "rb")) == NULL) {
 		std::cout << "Could not open specified file" << std::endl;
-	else
-		std::cout << "File opened successfully" << std::endl;
+		return;
+	}
+	
+	std::cout << "File opened successfully" << std::endl;
 
 	// Get the size of the file in bytes
 	long fileSize = getFileSize(file);
@@ -133,7 +135,7 @@ void CPU::loadROM(char const* path)
 
 	//std::cin.get();
 	delete[]fileBuf;
-	fclose(file);   // Almost forgot this 
+	fclose(file); 
 
 	printf("\nROM successfully loaded!\n\n");
 
