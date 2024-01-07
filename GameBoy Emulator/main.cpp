@@ -51,7 +51,7 @@ int main(int argc, char* argv[]) {
 	while (true) {
 
 		if (logging_flag) {
-			logging_file <<	GBCPU->stepCPU(logging_flag);
+			logging_file <<	GBCPU->stepCPU(logging_flag) << std::flush;
 		}
 		else {
 			printf("%s", GBCPU->stepCPU(logging_flag).c_str());
