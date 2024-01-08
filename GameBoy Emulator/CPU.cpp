@@ -39,7 +39,7 @@ std::string padMemory(std::uint8_t value) {
 std::string CPU::stepCPU(int log) {
 
 	// starting my timer
-	auto start_timer = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point start_timer = std::chrono::high_resolution_clock::now();
 
 	// outputting a string so that way main can print or log it to a file
 	std::stringstream output;
@@ -70,7 +70,7 @@ std::string CPU::stepCPU(int log) {
 	// Temporary fix to LY register because gfx isn't setup yet
 	memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
 
-	auto stop_timer = std::chrono::high_resolution_clock::now();
+	std::chrono::steady_clock::time_point stop_timer = std::chrono::high_resolution_clock::now();
 
 	std::chrono::microseconds duration_timer = std::chrono::duration_cast<std::chrono::microseconds>(stop_timer - start_timer);
 	printf("This step took %d micrsoseconds\n\n", (int)duration_timer.count());
