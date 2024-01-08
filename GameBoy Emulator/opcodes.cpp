@@ -317,43 +317,43 @@ void CPU::op_0x0D() {
 // DEC E - Decrement the contents of register E by 1
 void CPU::op_0x1D() {
 	--E;
-	F.ZERO_FLAG = (E == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((E & 0x0F) == 0x00);
+	F.ZERO_FLAG = (E == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((E & 0x0F) == 0x0F);
 }
 
 // DEC L - Decrement the contents of register L by 1
 void CPU::op_0x2D() {
 	--L;
-	F.ZERO_FLAG = (L == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((L & 0x0F) == 0x00);
+	F.ZERO_FLAG = (L == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((L & 0x0F) == 0x0F);
 }
 
 // DEC A - Increment the contents of C by 1
 void CPU::op_0x3D() {
 	--A;
-	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((A & 0x0F) == 0x00);
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((A & 0x0F) == 0x0F);
 }
 
 // DEC B - Decrement the contents of register B by 1
 void CPU::op_0x05() {
 	--B;
-	F.ZERO_FLAG = (B == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((B & 0x0F) == 0x00);
+	F.ZERO_FLAG = (B == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((B & 0x0F) == 0x0F);
 }
 
 // DEC D - Decrement the contents of register D by 1
 void CPU::op_0x15() {
 	--D;
-	F.ZERO_FLAG = (D == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((D & 0x0F) == 0x00);
+	F.ZERO_FLAG = (D == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((D & 0x0F) == 0x0F);
 }
 
 // DEC H - Decrement the contents of register H by 1
 void CPU::op_0x25() {
 	--H;
-	F.ZERO_FLAG = (H == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((H & 0x0F) == 0x00);
+	F.ZERO_FLAG = (H == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((H & 0x0F) == 0x0F);
 }
 
 // DEC (HL) - Decrement the contents of memory specified by register pair HL by 1.
 void CPU::op_0x35() {
 	memory.write(HL, memory.read(HL) - 1);
-	F.ZERO_FLAG = (memory.read(HL) == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x00);
+	F.ZERO_FLAG = (memory.read(HL) == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((memory.read(HL) & 0x0F) == 0x0F);
 }
 
 void CPU::op_0x0B() {
@@ -580,7 +580,9 @@ void CPU::op_0x17() {
 
 // RET
 void CPU::op_0xC9() {
+	printf("PC BEFORE: 0x%X", PC);
 	PC = StackPop();
+	printf("PC AFTER: 0x%X", PC);
 }
 
 uint8_t Opcode_Cycles[0x100] = {

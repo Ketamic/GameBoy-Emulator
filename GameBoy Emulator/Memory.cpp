@@ -49,6 +49,9 @@ uint8_t Memory::read(uint16_t address) {
 	else if (address <= 0xFFFF) {
 		return IE;
 	}
+
+	// No address should be outside of these bounds
+	return NULL;
 }
 
 void Memory::write(uint16_t address, uint8_t value) {
@@ -96,5 +99,8 @@ void Memory::write(uint16_t address, uint8_t value) {
 	}
 	else if (address <= 0xFFFF) {
 		IE = value;
+	}
+	else {
+		throw std::invalid_argument
 	}
 }

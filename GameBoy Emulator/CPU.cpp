@@ -64,6 +64,7 @@ std::string CPU::stepCPU(int log) {
 	(this->*Opcodes[memory.read(PC)])();
 
 	// Increment Program Counter so the CPU keeps moving foward
+	//printf("PC: 0x%X\n", PC);
 	++PC;
 
 	// Temporary fix to LY register because gfx isn't setup yet
