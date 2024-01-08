@@ -101,6 +101,6 @@ void Memory::write(uint16_t address, uint8_t value) {
 		IE = value;
 	}
 	else {
-		throw std::invalid_argument
+		throw std::invalid_argument("Invalid address - not within bounds of Memory");
 	}
 }
