@@ -580,9 +580,10 @@ void CPU::op_0x17() {
 
 // RET
 void CPU::op_0xC9() {
-	printf("PC BEFORE: 0x%X", PC);
+
 	PC = StackPop();
-	printf("PC AFTER: 0x%X", PC);
+	--PC;
+
 }
 
 uint8_t Opcode_Cycles[0x100] = {

@@ -100,8 +100,4 @@ void Memory::write(uint16_t address, uint8_t value) {
 	else if (address <= 0xFFFF) {
 		IE = value;
 	}
-	else {
-		// throws an exception if you try and write to a value not in memory
-		throw std::invalid_argument("Invalid address - not within bounds of Memory");
-	}
 }
