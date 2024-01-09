@@ -580,10 +580,8 @@ void CPU::op_0x17() {
 
 // RET
 void CPU::op_0xC9() {
-
 	PC = StackPop();
 	--PC;
-
 }
 
 uint8_t Opcode_Cycles[0x100] = {
