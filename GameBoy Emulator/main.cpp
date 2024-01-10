@@ -31,7 +31,6 @@ std::uint8_t SetBit(std::uint8_t number, int n, int x) {
 
 
 int main(int argc, char* argv[]) {
-	
 	CPU* GBCPU = new CPU();
 
 	GBCPU->init();

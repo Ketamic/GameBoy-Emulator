@@ -1,6 +1,8 @@
 #pragma once
 #include <stdint.h>
 #include <stdio.h>
+#include <string>
+#include <fstream>
 
 class Memory
 {
@@ -48,5 +50,6 @@ public:
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t value);
 	//void init();
+	bool DumpMemory(std::string path);
 };
 

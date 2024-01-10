@@ -81,6 +81,9 @@ private:
 
 	// OPCODES
 
+	// Invalid Opcode
+	void InvalidOpcode();
+
 	// NOP
 	void op_0x00();
 

@@ -31,6 +31,11 @@ std::uint8_t CPU::GetImmediateOperand() {
 	return memory.read(PC);
 }
 
+// Error Opcode - Throws an error if this opcode is called
+void CPU::InvalidOpcode() {
+	throw std::runtime_error("Opcode is Unimplemented or does not exist");
+}
+
 // NOP - Advances program counter by 1
 void CPU::op_0x00() {
 	// This does nothing
@@ -611,6 +616,10 @@ uint8_t Opcode_Cycles[0x100] = {
 
 // Loading all of the opcodes into the Opcode map
 void CPU::init_opcodes() {
+	for (int i = 0; i < 0xFF; ++i) {
+		Opcodes[i] = &CPU::InvalidOpcode;
+	}
+
 	Opcodes[0x00] = &CPU::op_0x00;
 	Opcodes[0x01] = &CPU::op_0x01;
 	Opcodes[0x0C] = &CPU::op_0x0C;
