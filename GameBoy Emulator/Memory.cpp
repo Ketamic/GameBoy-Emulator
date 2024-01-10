@@ -101,3 +101,16 @@ void Memory::write(uint16_t address, uint8_t value) {
 		IE = value;
 	}
 }
+
+void Memory::DumpMemory(std::string path) {
+	std::ofstream mem_file;
+	mem_file.open(path);
+
+
+	for (int i = 0; i < 0x2000; ++i) {
+		mem_file << std::hex << std::uppercase << std::setw(4) << std::setfill('0') << i << ": ";
+		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << VRAM[i + 1];
+		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << VRAM[i] << "\n";
+	}
+	mem_file.close();
+}

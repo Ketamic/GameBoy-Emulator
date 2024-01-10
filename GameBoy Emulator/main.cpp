@@ -29,7 +29,6 @@ std::uint8_t SetBit(std::uint8_t number, int n, int x) {
 	return number ^ (-x ^ number) & (1UL << n);
 }
 
-
 int main(int argc, char* argv[]) {
 	CPU* GBCPU = new CPU();
 
@@ -38,12 +37,23 @@ int main(int argc, char* argv[]) {
 	GBCPU->loadROM("Tetris (World) (Rev 1).gb");
 	GBCPU->loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
+	std::ofstream logging_file;
+
 	std::string n;
 	printf("Would you like to log to a file? (y/n) ");
 	std::cin >> n;
 	bool logging_flag = (n == "y");
-	std::ofstream logging_file;
-	logging_file.open("opcodes.log");
+
+	if (logging_flag) {
+		logging_file.open("opcodes.log");
+
+		if (!logging_file.is_open()) {
+			printf("Logging file failed to open!");
+			throw std::runtime_error("Logging file failed to open");
+		}
+
+		logging_file << "test\n";
+	}
 
 	int xyzzy = 0;
 
@@ -66,6 +76,7 @@ int main(int argc, char* argv[]) {
 		*/
 	}
 	
+	logging_file.close();
 	
 	return 0;
 	
