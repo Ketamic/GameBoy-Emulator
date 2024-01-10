@@ -50,9 +50,14 @@ std::string CPU::stepCPU(int log) {
 	// The + seen near the variables casts them to an int 
 
 	// adding part of the HRAM block to the output
-	output << "HRAM:\n0xFFFE: " << std::uppercase << std::hex << +memory.read(0xFFFF) << +memory.read(0xFFFE);
-	output << "\n0xFFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC);
-	output << "\n0xFFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n";
+	//output << "HRAM:\n0xFFFE: " << std::uppercase << std::hex << +memory.read(0xFFFF) << +memory.read(0xFFFE);
+	//output << "\n0xFFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC);
+	//output << "\n0xFFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n";
+
+	// adding part of the VRAM block to the output
+	output << "VRAM:\n0x8010: " << std::uppercase << std::hex << +memory.read(0x8011) << +memory.read(0x8010);
+	output << "\n0x8012: " << +memory.read(0x8013) << +memory.read(0x8012);
+	output << "\n0x8014: " << +memory.read(0x8015) << +memory.read(0x8014) << "\n";
 
 	// Adding all of the registers to the output
 	output << "PC: 0x" << padRegister(PC); output << "  SP: 0x" << padRegister(SP);
