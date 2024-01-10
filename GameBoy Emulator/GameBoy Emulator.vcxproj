@@ -153,10 +153,6 @@
     <ClInclude Include="Flags.h" />
     <ClInclude Include="Memory.h" />
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="log\memdump.log" />
-    <Text Include="log\opcodes.log" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

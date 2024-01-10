@@ -103,6 +103,7 @@ void Memory::write(uint16_t address, uint8_t value) {
 }
 
 void Memory::DumpMemory(std::string path) {
+	printf("Dumping Memory...");
 	std::ofstream mem_file;
 	mem_file.open(path);
 	if (!mem_file.is_open()) {
@@ -110,10 +111,13 @@ void Memory::DumpMemory(std::string path) {
 		throw std::runtime_error("Memory Dump file failed to open");
 	}
 
-	for (int i = 0; i < 0x2000; ++i) {
-		mem_file << std::hex << std::uppercase << std::setw(4) << std::setfill('0') << i << ": ";
-		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << VRAM[i + 1];
-		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << VRAM[i] << "\n";
+	printf("%X%X", VRAM[10], VRAM[11]);
+
+	for (int i = 0x1FFF; i >= 0; i -= 2) {
+		//mem_file << i << ": \n";
+		mem_file << std::hex << std::uppercase << std::setw(4) << std::setfill('0') << 0x8000 + i << ": ";
+		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << +VRAM[0x1FFF - i + 1];
+		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << +VRAM[0x1FFF - i] << "\n";
 	}
 	mem_file.close();
 }

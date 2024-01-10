@@ -42,8 +42,4 @@
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
-  <ItemGroup>
-    <Text Include="log\memdump.log" />
-    <Text Include="log\opcodes.log" />
-  </ItemGroup>
 </Project>
