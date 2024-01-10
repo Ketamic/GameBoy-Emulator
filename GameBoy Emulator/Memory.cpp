@@ -105,7 +105,10 @@ void Memory::write(uint16_t address, uint8_t value) {
 void Memory::DumpMemory(std::string path) {
 	std::ofstream mem_file;
 	mem_file.open(path);
-
+	if (!mem_file.is_open()) {
+		printf("Memory Dump file failed to open!");
+		throw std::runtime_error("Memory Dump file failed to open");
+	}
 
 	for (int i = 0; i < 0x2000; ++i) {
 		mem_file << std::hex << std::uppercase << std::setw(4) << std::setfill('0') << i << ": ";

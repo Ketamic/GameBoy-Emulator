@@ -51,8 +51,6 @@ int main(int argc, char* argv[]) {
 			printf("Logging file failed to open!");
 			throw std::runtime_error("Logging file failed to open");
 		}
-
-		logging_file << "test\n";
 	}
 
 	int xyzzy = 0;
