@@ -113,7 +113,7 @@ void Memory::DumpMemory(std::string path) {
 
 	printf("%X%X", VRAM[10], VRAM[11]);
 
-	for (int i = 0x1FFF; i >= 0; i -= 2) {
+	for (int i = 0x1FFE; i >= 0; i -= 2) {
 		//mem_file << i << ": \n";
 		mem_file << std::hex << std::uppercase << std::setw(4) << std::setfill('0') << 0x8000 + i << ": ";
 		mem_file << std::hex << std::uppercase << std::setw(2) << std::setfill('0') << +VRAM[0x1FFF - i + 1];

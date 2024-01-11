@@ -10,6 +10,7 @@
 #include <chrono>
 
 #include "Memory.h"
+#include "PPU.h"
 #include "Flags.h"
 
 class CPU
@@ -66,6 +67,7 @@ private:
 	bool INTERUPT_MASTER_ENABLE = 0;
 
 	Memory memory = Memory();
+	PPU ppu = PPU();
 
 	typedef void (CPU::* Opcode)(void);
 	Opcode Opcodes[0xFF + 1];

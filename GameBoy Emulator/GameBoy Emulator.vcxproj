@@ -147,11 +147,13 @@
     <ClCompile Include="Memory.cpp" />
     <ClCompile Include="opcodes.cpp" />
     <ClCompile Include="opcodes16.cpp" />
+    <ClCompile Include="PPU.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CPU.h" />
     <ClInclude Include="Flags.h" />
     <ClInclude Include="Memory.h" />
+    <ClInclude Include="PPU.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

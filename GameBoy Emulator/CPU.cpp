@@ -9,6 +9,8 @@ void CPU::init() {
 	init_opcodes();
 	init_opcodes16();
 
+	ppu.init(&memory);
+
 	F.CARRY_FLAG = 0;
 	F.HALF_CARRY_FLAG = 0;
 	F.SUBTRACT_FLAG = 0;
@@ -35,6 +37,26 @@ std::string padMemory(std::uint8_t value) {
 	formatted << std::uppercase << std::hex << std::setw(2) << std::setfill('0') << value;
 	return formatted.str();
 }
+
+uint8_t Opcode_Cycles[0x100] = {
+	//  0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
+		4, 12,8, 8, 4, 4, 8, 4, 20,8, 8, 8, 4, 4, 8, 4,    // 0x00
+		4, 12,8, 8, 4, 4, 8, 4, 8, 8, 8, 8, 4, 4, 8, 4,    // 0x10
+		8, 12,8, 8, 4, 4, 8, 4, 8, 8, 8, 8, 4, 4, 8, 4,    // 0x20
+		8, 12,8, 8, 12,12,12,4, 8, 8, 8, 8, 4, 4, 8, 4,    // 0x30
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0x40
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0x50
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0x60
+		8, 8, 8, 8, 8, 8, 4, 8, 4, 4, 4, 4, 4, 4, 8, 4,    // 0x70
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0x80
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0x90
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0xA0
+		4, 4, 4, 4, 4, 4, 8, 4, 4, 4, 4, 4, 4, 4, 8, 4,    // 0xB0
+		8, 12,12,12,12,16,8,32, 8, 8, 12,8,12,12, 8,32,    // 0xC0
+		8, 12,12, 0,12,16,8,32, 8, 8, 12,0,12, 0, 8,32,    // 0xD0
+		12,12,8, 0, 0, 16,8,32,16, 4, 16,0, 0, 0, 8,32,    // 0xE0
+		12,12,8, 4, 0, 16,8,32,12, 8, 16,4, 0, 0, 8,32     // 0xF0
+};
 
 std::string CPU::stepCPU(int log) {
 
@@ -66,13 +88,21 @@ std::string CPU::stepCPU(int log) {
 
 	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
 
+	// I need to have a copy of the PC 
+	std::uint16_t PC_copy = PC;
+
+	// Running opcode from table
 	(this->*Opcodes[memory.read(PC)])();
+
+	// Running PPU
+	ppu.StepPPU(Opcode_Cycles[PC_copy]);
 
 	// Increment Program Counter so the CPU keeps moving foward
 	++PC;
 
 	// Temporary fix to LY register because gfx isn't setup yet
 	memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
+	printf("LY in CPU: %X", memory.read(0xFF44));
 
 	std::chrono::steady_clock::time_point stop_timer = std::chrono::high_resolution_clock::now();
 
