@@ -82,8 +82,8 @@ std::string CPU::stepCPU(int log) {
 	output << "\n0x8014: " << +memory.read(0x8015) << +memory.read(0x8014) << "\n";
 
 	// Adding all of the registers to the output
-	output << "PC: 0x" << padRegister(PC); output << "  SP: 0x" << padRegister(SP);
-	output << "  AF: 0x" << padRegister(AF); output << "  BC: 0x" << padRegister(BC);
+	output << "PC: 0x" << padRegister(PC); output << "  SP: 0x" << padRegister(SP); output << "  LY: 0x" << padRegister(memory.read(0xFF44));
+	output << "\nAF: 0x" << padRegister(AF); output << "  BC: 0x" << padRegister(BC);
 	output << "  DE: 0x" << padRegister(DE); output << "  HL: 0x" << padRegister(HL) << "\n";
 
 	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
@@ -99,10 +99,6 @@ std::string CPU::stepCPU(int log) {
 
 	// Increment Program Counter so the CPU keeps moving foward
 	++PC;
-
-	// Temporary fix to LY register because gfx isn't setup yet
-	memory.write(0xFF44, (memory.read(0xFF44) + 1) % 153);
-	printf("LY in CPU: %X", memory.read(0xFF44));
 
 	std::chrono::steady_clock::time_point stop_timer = std::chrono::high_resolution_clock::now();
 
