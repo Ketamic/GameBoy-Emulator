@@ -1,6 +1,10 @@
 #include "Memory.h"
 
-// Initialize values in memory that would usually be set by the boot ROM
+// Initializing function for memory that tries to link the registers to their 
+// respective spots in memory to make it more readable
+void Memory::init() {
+	LY = &IO[0x003B];
+}
 
 // Reads a value from memory at the specified address
 uint8_t Memory::read(uint16_t address) {
@@ -33,15 +37,7 @@ uint8_t Memory::read(uint16_t address) {
 		return 0x00; // This shouldn't ever happen but its just here for consistency
 	} 
 	else if (address <= 0xFF7F) {
-		if (address <= 0xFF43) {
-			return IO[(0xFF7F - address)];
-		}
-		else if (address == 0xFF44) {
-			return LY;
-		}
-		else {
-			return IO[(0xFF7F - address)];
-		}
+		return IO[(0xFF7F - address)];
 	}
 	else if (address <= 0xFFFE) {
 		return HRAM[0xFFFE - address];

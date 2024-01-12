@@ -45,12 +45,12 @@ private:
 	uint8_t IE; // Interupt Enable Register
 
 	//FF44
-	uint8_t LY;
+	uint8_t* LY;
 
 public:
 	uint8_t read(uint16_t address);
 	void write(uint16_t address, uint8_t value);
-	//void init();
+	void init();
 	void DumpMemory(std::string path);
 };
 

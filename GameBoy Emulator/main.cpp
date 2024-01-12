@@ -63,15 +63,6 @@ int main(int argc, char* argv[]) {
 		else {
 			printf("%s", GBCPU->stepCPU(logging_flag).c_str());
 		}
-
-		// This is rarely used now that I have my file output so I'm just going to comment
-		// this out until I need it again
-		/* Run X amount of cycles if the user isn't logging
-		if (xyzzy == 0 && logging_flag == false) {
-			std::cin >> xyzzy;
-		}
-		--xyzzy;
-		*/
 	}
 	
 	logging_file.close();
