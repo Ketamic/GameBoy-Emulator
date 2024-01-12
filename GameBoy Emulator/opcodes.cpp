@@ -34,6 +34,12 @@ std::uint8_t CPU::GetImmediateOperand() {
 // Error Opcode - Throws an error if this opcode is called
 void CPU::InvalidOpcode() {
 	memory.DumpMemory("memdump.log");
+
+	for (int i = 0; i < 10; i += 2) {
+		std::uint8_t mem = memory.read(0x8010 + i);
+		std::cout << "\nvalue: " << (int)mem;
+	}
+
 	throw std::runtime_error("Opcode is Unimplemented or does not exist");
 }
 
