@@ -80,15 +80,7 @@ void Memory::write(uint16_t address, uint8_t value) {
 		return; // This shouldn't ever happen but its just here for consistency -- writing to it does nothing
 	}
 	else if (address <= 0xFF7F) {
-		if (address <= 0xFF43) {
-			IO[(0xFF7F - address)] = value;
-		}
-		else if (address == 0xFF44) {
-			LY = value;
-		}
-		else {
-			IO[(0xFF7F - address)] = value;
-		}
+		IO[(0xFF7F - address)] = value;
 	}
 	else if (address <= 0xFFFE) {
 		HRAM[0xFFFE - address] = value;
