@@ -35,9 +35,23 @@ std::uint8_t CPU::GetImmediateOperand() {
 void CPU::InvalidOpcode() {
 	memory.DumpMemory("memdump.log");
 
-	for (int i = 0; i < 10; i += 2) {
+	for (int i = 0; i < 0x10; i += 2) {
+		
 		std::uint8_t mem = memory.read(0x8010 + i);
-		std::cout << "\nvalue: " << (int)mem;
+		char tile_row[8];
+		for (int j = 0; j < 8; ++j) {
+			if (GetBit(mem, j) == 1) {
+				tile_row[j] = '@';
+			}
+			else {
+				tile_row[j] = ' ';
+			}
+		}
+		
+		std::cout << "\nvalue: " << std::hex << (int)mem << ": "; //11111100
+		for (int j = 7; j > -1; --j) {
+			std::cout << tile_row[j];
+		}
 	}
 
 	throw std::runtime_error("Opcode is Unimplemented or does not exist");

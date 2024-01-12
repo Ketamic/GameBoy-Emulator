@@ -18,7 +18,7 @@ void CPU::init() {
 }
 
 // Utility function that returns the exact bit asked for, mostly useful for the 16-bit opcodes
-std::uint8_t CPU::GetBit(uint8_t number, int bit) {
+std::uint8_t CPU::GetBit(std::uint8_t number, int bit) {
 	return (number >> bit) & 1U;
 }
 
