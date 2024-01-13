@@ -3,6 +3,7 @@
 #include "SDL2/include/SDL.h"
 
 #include "CPU.h"
+#include "platform.h"
 
 // Debugging function
 void printBits(size_t const size, void const* const ptr)
@@ -31,11 +32,14 @@ std::uint8_t SetBit(std::uint8_t number, int n, int x) {
 
 int main(int argc, char* argv[]) {
 	CPU* GBCPU = new CPU();
+	platform* plat = new platform();
 
 	GBCPU->init();
 
 	GBCPU->loadROM("Tetris (World) (Rev 1).gb");
 	GBCPU->loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
+
+	plat->init();
 
 	std::ofstream logging_file;
 

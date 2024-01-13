@@ -2,8 +2,6 @@
 
 #define LCD_VERT_CYCLES 456
 #define LCD_VERT_LINES  154
-#define LCD_WIDTH       160
-#define LCD_HEIGHT      144
 
 void PPU::init(Memory* nmemory) {
 	memory = nmemory;
