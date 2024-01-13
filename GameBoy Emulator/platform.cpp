@@ -24,3 +24,11 @@ void platform::init() {
         throw std::logic_error("SDL2 failed to get surface from the window");
     }
 }
+
+void platform::StepSDL() {
+    SDL_PollEvent(&event);
+}
+
+SDL_Event platform::getEvent() {
+    return event;
+}

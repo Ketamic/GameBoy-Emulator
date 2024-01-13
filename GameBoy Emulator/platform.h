@@ -11,7 +11,11 @@ private:
 	SDL_Window* window;
 	SDL_Surface* window_surface;
 
+	SDL_Event event;
+
 public:
 	void init();
+	void StepSDL();
+	SDL_Event getEvent();
 };
 
