@@ -1,6 +1,6 @@
-//#include <SDL.h>
 #include <string>
 #include <iostream>
+#include "SDL2/include/SDL.h"
 
 #include "CPU.h"
 
