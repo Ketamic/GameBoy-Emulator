@@ -29,6 +29,6 @@ void platform::StepSDL() {
     SDL_PollEvent(&event);
 }
 
-SDL_Event platform::getEvent() {
-    return event;
+SDL_Event* platform::getEvent() {
+    return &event;
 }

@@ -39,8 +39,6 @@ int main(int argc, char* argv[]) {
 	GBCPU->loadROM("Tetris (World) (Rev 1).gb");
 	GBCPU->loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM
 
-	plat->init();
-
 	std::ofstream logging_file;
 
 	std::string n;
@@ -57,9 +55,18 @@ int main(int argc, char* argv[]) {
 		}
 	}
 
-	int xyzzy = 0;
+	// Initializing the SDL2 window
+	plat->init();
+	bool quit = false;
+	SDL_Event* event;
 
-	while (true) {
+	while (!quit) {
+		plat->StepSDL();
+		event = plat->getEvent();
+
+		if (event->type == SDL_QUIT) {
+			quit = true;
+		}
 
 		if (logging_flag) {
 			logging_file <<	GBCPU->stepCPU(logging_flag) << std::flush;
@@ -69,6 +76,12 @@ int main(int argc, char* argv[]) {
 		}
 	}
 	
+	// shutting down
+
+
+	delete(GBCPU);
+	delete(plat);
+
 	logging_file.close();
 	
 	return 0;
