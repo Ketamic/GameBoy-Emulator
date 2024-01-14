@@ -17,16 +17,19 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed load window");
     }
 
-    window_surface = SDL_GetWindowSurface(window);
-
-    if (!window_surface) {
-        printf("Failed to get surface from the window\n SDL Error: %s", SDL_GetError());
-        throw std::logic_error("SDL2 failed to get surface from the window");
+    renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+    if (!renderer) {
+        printf("Could not create a renderer: %s", SDL_GetError());
+        throw std::logic_error("SDL2 Failed to create renderer");
     }
+
+    SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
+    SDL_RenderClear(renderer);
 }
 
 void platform::StepSDL() {
     SDL_PollEvent(&event);
+    SDL_RenderPresent(renderer);
 }
 
 SDL_Event* platform::getEvent() {
