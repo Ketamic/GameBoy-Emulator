@@ -18,6 +18,7 @@ void platform::init() {
     }
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
+   
     if (!renderer) {
         printf("Could not create a renderer: %s", SDL_GetError());
         throw std::logic_error("SDL2 Failed to create renderer");
@@ -25,6 +26,12 @@ void platform::init() {
 
     SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
     SDL_RenderClear(renderer);
+}
+
+void platform::destroy() {
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 }
 
 void platform::StepSDL() {

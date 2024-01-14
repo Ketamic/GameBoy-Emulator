@@ -16,6 +16,7 @@ private:
 
 public:
 	void init();
+	void destroy();
 	void StepSDL();
 	SDL_Event* getEvent();
 };

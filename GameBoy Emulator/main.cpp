@@ -77,7 +77,7 @@ int main(int argc, char* argv[]) {
 	}
 	
 	// shutting down
-
+	plat->destroy();
 
 	delete(GBCPU);
 	delete(plat);
