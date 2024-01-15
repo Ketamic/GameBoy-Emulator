@@ -1,10 +1,7 @@
 #include "platform.h"
 
-#define LCD_WIDTH   160
-#define LCD_HEIGHT  144
-
 void platform::init() {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
+    if (SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
         printf("Failed to initialize the SDL2 library\n SDL Error: %s", SDL_GetError());
         throw std::logic_error("SDL2 Failed to initialize");
@@ -23,9 +20,6 @@ void platform::init() {
         printf("Could not create a renderer: %s", SDL_GetError());
         throw std::logic_error("SDL2 Failed to create renderer");
     }
-
-    SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
-    SDL_RenderClear(renderer);
 }
 
 void platform::destroy() {
@@ -34,9 +28,35 @@ void platform::destroy() {
     SDL_Quit();
 }
 
+// Draws all of the rectangles from the ScreenArray with the correct color
+// Doesn't feel very optmized but i'll look at it later if it becomes an issue
+void platform::SetupScreen() {
+    for (int i = 0; i < LCD_WIDTH; ++i) {
+        for (int j = 0; j < LCD_HEIGHT; ++j) {
+            if (ScreenArray[i][j] == 1) {
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+            }
+            else if(ScreenArray[i][j] == 0) {
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            }
+            else {
+                throw std::runtime_error("ScreenArray value is out of range");
+            }
+
+            SDL_RenderFillRect(renderer, new SDL_Rect({ i, j, 1, 1 }));
+        }
+    }
+}
+
 void platform::StepSDL() {
     SDL_PollEvent(&event);
+
+    SetupScreen();
+    
+    // Set Background color to white and render
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
 }
 
 SDL_Event* platform::getEvent() {

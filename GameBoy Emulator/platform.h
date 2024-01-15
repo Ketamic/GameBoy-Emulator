@@ -3,10 +3,13 @@
 #include "SDL2/include/SDL.h"
 #include <stdexcept>
 
+#define LCD_WIDTH   160
+#define LCD_HEIGHT  144
+
 class platform
 {
 private:
-	void CreateWindow();
+	void SetupScreen();
 
 	SDL_Window* window;
 	SDL_Surface* window_surface;
@@ -19,5 +22,7 @@ public:
 	void destroy();
 	void StepSDL();
 	SDL_Event* getEvent();
+
+	int ScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
 };
 
