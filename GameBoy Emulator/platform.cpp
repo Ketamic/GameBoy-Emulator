@@ -20,6 +20,18 @@ void platform::init() {
         printf("Could not create a renderer: %s", SDL_GetError());
         throw std::logic_error("SDL2 Failed to create renderer");
     }
+
+    // Set Background color to white and render
+    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_RenderPresent(renderer);
+}
+
+void platform::SetScreenArray(int i, int j, bool value) {
+    ScreenArray[i][j] = value;
+}
+
+bool platform::GetScreenArray(int i, int j) {
+    return ScreenArray[i][j];
 }
 
 void platform::destroy() {
@@ -31,32 +43,36 @@ void platform::destroy() {
 // Draws all of the rectangles from the ScreenArray with the correct color
 // Doesn't feel very optmized but i'll look at it later if it becomes an issue
 void platform::SetupScreen() {
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     for (int i = 0; i < LCD_WIDTH; ++i) {
         for (int j = 0; j < LCD_HEIGHT; ++j) {
-            if (ScreenArray[i][j] == 1) {
-                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-            }
-            else if(ScreenArray[i][j] == 0) {
-                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+            if (GetScreenArray(i, j) == 1) {
+                SDL_Rect* rect = new SDL_Rect({ i, j, 1, 1 });
+                SDL_RenderFillRect(renderer, rect);
+                delete(rect);
             }
             else {
                 throw std::runtime_error("ScreenArray value is out of range");
             }
-
-            SDL_RenderFillRect(renderer, new SDL_Rect({ i, j, 1, 1 }));
         }
     }
+    
+    // This sets the value of RenderedScreenArray to ScreenArray so we know what screen is rendered
+    memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
 }
 
 void platform::StepSDL() {
     SDL_PollEvent(&event);
 
-    SetupScreen();
-    
-    // Set Background color to white and render
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
+    // Comparing the two arrays to see if they are equivalent and not to render if nothing has changed
+    if (memcmp(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray)) != 0) {
+        SetupScreen();
+
+        // Set anywhere that wasn't colored white
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
+    }
 }
 
 SDL_Event* platform::getEvent() {

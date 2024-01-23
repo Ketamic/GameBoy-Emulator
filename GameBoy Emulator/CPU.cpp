@@ -3,13 +3,13 @@
 #define PBSTR "||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||"
 #define PBWIDTH 60
 
-void CPU::init() {
+void CPU::init(platform* plat) {
 	printf("initializing...\n\n");
 	//init_registers();
 	init_opcodes();
 	init_opcodes16();
 
-	ppu.init(&memory);
+	ppu.init(&memory, plat);
 
 	F.CARRY_FLAG = 0;
 	F.HALF_CARRY_FLAG = 0;

@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	CPU* GBCPU = new CPU();
 	platform* plat = new platform();
 
-	GBCPU->init();
+	GBCPU->init(plat);
 
 	GBCPU->loadROM("Tetris (World) (Rev 1).gb");
 	GBCPU->loadROM("dmg_rom.bin"); // mapping boot rom on top of the game ROM

@@ -17,12 +17,19 @@ private:
 
 	SDL_Event event;
 
+	bool ScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
+	bool RenderedScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
+
 public:
 	void init();
 	void destroy();
+
 	void StepSDL();
 	SDL_Event* getEvent();
 
-	int ScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
+	// Getters and Setters for ScreenArray
+	void SetScreenArray(int i, int j, bool value);
+	bool GetScreenArray(int i, int j);
+
 };
 
