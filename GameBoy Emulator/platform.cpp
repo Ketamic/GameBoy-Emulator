@@ -21,11 +21,12 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed to create renderer");
     }
 
-    // Set Background color to white and render
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    // Creates a white background to start
+    SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+    SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
 
-    SDL_Delay(5000);
+    SDL_Delay(2000);
 }
 
 void platform::SetScreenArray(int i, int j, int value) {
@@ -66,8 +67,11 @@ void platform::StepSDL() {
     // Comparing the two arrays to see if they are equivalent and not to render if nothing has changed
     if (memcmp(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray)) != 0) {
 
-
+        printf("RUNNING THE MEMCMP FUNC");
         // Set anywhere that wasn't colored white
+
+        // Setting up each pixel for rendering
+        SetupScreen();
 
         // This sets the value of RenderedScreenArray to ScreenArray so we know what screen is rendered
         memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
@@ -78,14 +82,11 @@ void platform::StepSDL() {
        //     }
        // }
 
+        SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+        SDL_RenderPresent(renderer);
+        SDL_RenderClear(renderer);
+
     }
-
-    SetupScreen();
-
-    SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
-    SDL_RenderPresent(renderer);
-    SDL_RenderClear(renderer);
-
 }
 
 SDL_Event* platform::getEvent() {
