@@ -21,12 +21,17 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed to create renderer");
     }
 
+    screen_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, LCD_WIDTH, LCD_HEIGHT);
+
+    if (!screen_texture) {
+        printf("Could not create the screen texture: %s", SDL_GetError());
+        throw std::logic_error("SDL2 Failed to create the screen texture");
+    }
+
     // Creates a white background to start
     SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
-
-    SDL_Delay(2000);
 }
 
 void platform::SetScreenArray(int i, int j, int value) {
@@ -38,6 +43,7 @@ int platform::GetScreenArray(int i, int j) {
 }
 
 void platform::destroy() {
+    SDL_DestroyTexture(screen_texture);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
@@ -48,27 +54,32 @@ void platform::destroy() {
 void platform::SetupScreen() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 
-    for (int i = 0; i < LCD_WIDTH; ++i) {
-        for (int j = 0; j < LCD_HEIGHT; ++j) {
-            if (GetScreenArray(i, j) == 1) {
-                SDL_Rect* rect = new SDL_Rect({ i, j, 1, 1 });
-                SDL_RenderFillRect(renderer, rect);
-                delete(rect);
-            }
+    uint32_t* texture_buffer = new uint32_t[LCD_WIDTH + LCD_HEIGHT];
+
+    //for (int i = 0; i < LCD_WIDTH; ++i) {
+    //    for (int j = 0; j < LCD_HEIGHT; ++j) {
+    //        if (GetScreenArray(i, j) == 1) {
+    //            SDL_Rect* rect = new SDL_Rect({ i, j, 1, 1 });
+    //           SDL_RenderFillRect(renderer, rect);
+    //            delete(rect);
+    //        }
+    //    }
+    //}
+
+    for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT; ++i) {
+        if (GetScreenArray(i / LCD_HEIGHT, i % LCD_WIDTH) == 1) {
+            texture_buffer[i] = 0xFF000000;
         }
     }
+
+    SDL_UpdateTexture(screen_texture, NULL, texture_buffer, LCD_WIDTH * sizeof(uint32_t));
 }
 
 void platform::StepSDL() {
     SDL_PollEvent(&event);
 
-    printf("Stepping SDL; memcmp value %d\n", memcmp(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray)));
-
     // Comparing the two arrays to see if they are equivalent and not to render if nothing has changed
     if (memcmp(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray)) != 0) {
-
-        printf("RUNNING THE MEMCMP FUNC");
-        // Set anywhere that wasn't colored white
 
         // Setting up each pixel for rendering
         SetupScreen();
@@ -76,16 +87,15 @@ void platform::StepSDL() {
         // This sets the value of RenderedScreenArray to ScreenArray so we know what screen is rendered
         memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
 
-       // for (int i = 0; i < LCD_WIDTH; ++i) {
-       //     for (int j = 0; j < LCD_HEIGHT; ++j) {
-       //         ScreenArray[i][j] = 0;
-       //     }
-       // }
+        // Setting ScreenArray to 0 so it can be written to again by the program
+        memset(ScreenArray, 0, sizeof(ScreenArray));
+
 
         SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+        SDL_RenderCopy(renderer, screen_texture, NULL, NULL);
+
         SDL_RenderPresent(renderer);
         SDL_RenderClear(renderer);
-
     }
 }
 

@@ -14,6 +14,8 @@ private:
 	SDL_Window* window;
 	SDL_Renderer* renderer;
 
+	SDL_Texture* screen_texture;
+
 	SDL_Event event;
 
 	int ScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
