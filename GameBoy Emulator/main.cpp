@@ -68,6 +68,13 @@ int main(int argc, char* argv[]) {
 			quit = true;
 		}
 
+		int j = 0;
+		for (int i = 0; i < 70; ++i) {
+			plat->SetScreenArray(i, j, 1);
+			++j;
+		}
+
+
 		if (logging_flag) {
 			logging_file <<	GBCPU->stepCPU(logging_flag) << std::flush;
 		}

@@ -24,13 +24,15 @@ void platform::init() {
     // Set Background color to white and render
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderPresent(renderer);
+
+    SDL_Delay(5000);
 }
 
-void platform::SetScreenArray(int i, int j, bool value) {
+void platform::SetScreenArray(int i, int j, int value) {
     ScreenArray[i][j] = value;
 }
 
-bool platform::GetScreenArray(int i, int j) {
+int platform::GetScreenArray(int i, int j) {
     return ScreenArray[i][j];
 }
 
@@ -44,6 +46,7 @@ void platform::destroy() {
 // Doesn't feel very optmized but i'll look at it later if it becomes an issue
 void platform::SetupScreen() {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+
     for (int i = 0; i < LCD_WIDTH; ++i) {
         for (int j = 0; j < LCD_HEIGHT; ++j) {
             if (GetScreenArray(i, j) == 1) {
@@ -51,28 +54,38 @@ void platform::SetupScreen() {
                 SDL_RenderFillRect(renderer, rect);
                 delete(rect);
             }
-            else {
-                throw std::runtime_error("ScreenArray value is out of range");
-            }
         }
     }
-    
-    // This sets the value of RenderedScreenArray to ScreenArray so we know what screen is rendered
-    memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
 }
 
 void platform::StepSDL() {
     SDL_PollEvent(&event);
 
+    printf("Stepping SDL; memcmp value %d\n", memcmp(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray)));
+
     // Comparing the two arrays to see if they are equivalent and not to render if nothing has changed
     if (memcmp(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray)) != 0) {
-        SetupScreen();
+
 
         // Set anywhere that wasn't colored white
-        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-        SDL_RenderPresent(renderer);
-        SDL_RenderClear(renderer);
+
+        // This sets the value of RenderedScreenArray to ScreenArray so we know what screen is rendered
+        memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
+
+       // for (int i = 0; i < LCD_WIDTH; ++i) {
+       //     for (int j = 0; j < LCD_HEIGHT; ++j) {
+       //         ScreenArray[i][j] = 0;
+       //     }
+       // }
+
     }
+
+    SetupScreen();
+
+    SDL_SetRenderDrawColor(renderer, 180, 180, 180, 255);
+    SDL_RenderPresent(renderer);
+    SDL_RenderClear(renderer);
+
 }
 
 SDL_Event* platform::getEvent() {

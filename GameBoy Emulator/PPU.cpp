@@ -15,7 +15,7 @@ void PPU::OutputTiles() {
 	for (int i = 0x8000; i < 0xA000; i += 2) {
 		uint8_t mem = memory->read(i);
 		for (int j = 0; j < 8; ++j) {
-			plat->SetScreenArray(i, j, ((mem >> j) & 1U));
+			//plat->SetScreenArray(i, j, ((mem >> j) & 1U));
 		}
 	}
 }
