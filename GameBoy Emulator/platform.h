@@ -18,8 +18,8 @@ private:
 
 	SDL_Event event;
 
-	int ScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
-	int RenderedScreenArray[LCD_WIDTH][LCD_HEIGHT] = { 0 };
+	uint32_t ScreenArray[LCD_WIDTH][LCD_HEIGHT];
+	uint32_t RenderedScreenArray[LCD_WIDTH][LCD_HEIGHT];
 
 public:
 	void init();
@@ -29,8 +29,8 @@ public:
 	SDL_Event* getEvent();
 
 	// Getters and Setters for ScreenArray
-	void SetScreenArray(int i, int j, int value);
-	int GetScreenArray(int i, int j);
+	void SetScreenArray(int i, int j, uint32_t value);
+	uint32_t GetScreenArray(int i, int j);
 
 };
 

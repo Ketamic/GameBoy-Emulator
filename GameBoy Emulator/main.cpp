@@ -70,10 +70,9 @@ int main(int argc, char* argv[]) {
 
 		int j = 0;
 		for (int i = 0; i < 70; ++i) {
-			plat->SetScreenArray(i, j, 1);
+			plat->SetScreenArray(i, j, 0xFF000000);
 			++j;
 		}
-
 
 		if (logging_flag) {
 			logging_file <<	GBCPU->stepCPU(logging_flag) << std::flush;
