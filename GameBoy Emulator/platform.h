@@ -6,6 +6,8 @@
 #define LCD_WIDTH   160
 #define LCD_HEIGHT  144
 
+#define WINDOW_SIZE_MODIFIER 4
+
 class platform
 {
 private:

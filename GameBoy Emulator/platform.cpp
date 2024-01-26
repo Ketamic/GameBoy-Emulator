@@ -7,7 +7,7 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed to initialize");
     }
 
-    window = SDL_CreateWindow("Gameboy Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, LCD_WIDTH, LCD_HEIGHT, 0);
+    window = SDL_CreateWindow("Gameboy Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, LCD_WIDTH * WINDOW_SIZE_MODIFIER, LCD_HEIGHT * WINDOW_SIZE_MODIFIER, 0);
 
     if (!window) {
         printf("Failed to initialize window\n SDL Error: %s", SDL_GetError());

@@ -10,12 +10,19 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 }
 
 // Just spits out all the tiles in VRAM to the screen
-// More of a cool feature than a useful one
+// More of a testing feature than a useful one
 void PPU::OutputTiles() {
-	for (int i = 0x8000; i < 0xA000; i += 2) {
-		uint8_t mem = memory->read(i);
+	printf("outputting tiles...");
+	for(int k = 0; )
+	for (int i = 0; i < 0x10; i += 2) {
+		std::uint8_t mem = memory->read(0x8010 + i);
 		for (int j = 0; j < 8; ++j) {
-			//plat->SetScreenArray(i, j, ((mem >> j) & 1U));
+			if (((mem >> j) & 1U) == 1) {
+				plat->SetScreenArray(8 - j, i / 2, 0xFF000000);
+			}
+			else {
+				plat->SetScreenArray(8 - j, i / 2, 0xFFFFFFFF);
+			}
 		}
 	}
 }
@@ -27,4 +34,5 @@ void PPU::StepPPU(int cycles) {
 		// After a certain amount of cycles
 		memory->write(0xFF44, (memory->read(0xFF44) + 1) % 153);
 	}
+	OutputTiles();
 }

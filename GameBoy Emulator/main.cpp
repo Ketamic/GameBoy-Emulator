@@ -31,6 +31,7 @@ std::uint8_t SetBit(std::uint8_t number, int n, int x) {
 }
 
 int main(int argc, char* argv[]) {
+
 	CPU* GBCPU = new CPU();
 	platform* plat = new platform();
 
@@ -66,12 +67,6 @@ int main(int argc, char* argv[]) {
 
 		if (event->type == SDL_QUIT) {
 			quit = true;
-		}
-
-		int j = 0;
-		for (int i = 0; i < 70; ++i) {
-			plat->SetScreenArray(i, j, 0xFF000000);
-			++j;
 		}
 
 		if (logging_flag) {
