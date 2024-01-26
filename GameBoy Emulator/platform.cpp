@@ -28,6 +28,7 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed to create the screen texture");
     }
 
+    // Setting the Screen Arrays to white
     memset(ScreenArray, 0xFFFFFFFF, sizeof(ScreenArray));
     memset(RenderedScreenArray, 0xFFFFFFFF, sizeof(RenderedScreenArray));
 

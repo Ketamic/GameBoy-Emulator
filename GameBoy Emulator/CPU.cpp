@@ -58,7 +58,7 @@ uint8_t Opcode_Cycles[0x100] = {
 		12,12,8, 4, 0, 16,8,32,12, 8, 16,4, 0, 0, 8,32     // 0xF0
 };
 
-std::string CPU::stepCPU(int log) {
+std::string CPU::stepCPU(std::string log) {
 
 	// starting my timer
 	std::chrono::steady_clock::time_point start_timer = std::chrono::high_resolution_clock::now();
@@ -66,27 +66,30 @@ std::string CPU::stepCPU(int log) {
 	// outputting a string so that way main can print or log it to a file
 	std::stringstream output;
 
-	// std::hex only works with int so I have to cast my uint8_t to an unsigned int
-	output << "\nOPCODE: 0x" << std::uppercase << std::hex << unsigned int(memory.read(PC)) << "\n";
+	// If that flag isn't a logging flag then all this will be ignored and a blank string returned
+	if (log != "n") {
+		// std::hex only works with int so I have to cast my uint8_t to an unsigned int
+		output << "\nOPCODE: 0x" << std::uppercase << std::hex << unsigned int(memory.read(PC)) << "\n";
 
-	// The + seen near the variables casts them to an int 
+		// The + seen near the variables casts them to an int 
 
-	// adding part of the HRAM block to the output
-	//output << "HRAM:\n0xFFFE: " << std::uppercase << std::hex << +memory.read(0xFFFF) << +memory.read(0xFFFE);
-	//output << "\n0xFFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC);
-	//output << "\n0xFFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n";
+		// adding part of the HRAM block to the output
+		//output << "HRAM:\n0xFFFE: " << std::uppercase << std::hex << +memory.read(0xFFFF) << +memory.read(0xFFFE);
+		//output << "\n0xFFFC: " << +memory.read(0xFFFD) << +memory.read(0xFFFC);
+		//output << "\n0xFFFA: " << +memory.read(0xFFFB) << +memory.read(0xFFFA) << "\n";
 
-	// adding part of the VRAM block to the output
-	output << "VRAM:\n0x8010: " << std::uppercase << std::hex << +memory.read(0x8011) << +memory.read(0x8010);
-	output << "\n0x8012: " << +memory.read(0x8013) << +memory.read(0x8012);
-	output << "\n0x8014: " << +memory.read(0x8015) << +memory.read(0x8014) << "\n";
+		// adding part of the VRAM block to the output
+		output << "VRAM:\n0x8010: " << std::uppercase << std::hex << +memory.read(0x8011) << +memory.read(0x8010);
+		output << "\n0x8012: " << +memory.read(0x8013) << +memory.read(0x8012);
+		output << "\n0x8014: " << +memory.read(0x8015) << +memory.read(0x8014) << "\n";
 
-	// Adding all of the registers to the output
-	output << "PC: 0x" << padRegister(PC); output << "  SP: 0x" << padRegister(SP); output << "  LY: 0x" << padRegister(memory.read(0xFF44));
-	output << "\nAF: 0x" << padRegister(AF); output << "  BC: 0x" << padRegister(BC);
-	output << "  DE: 0x" << padRegister(DE); output << "  HL: 0x" << padRegister(HL) << "\n";
+		// Adding all of the registers to the output
+		output << "PC: 0x" << padRegister(PC); output << "  SP: 0x" << padRegister(SP); output << "  LY: 0x" << padRegister(memory.read(0xFF44));
+		output << "\nAF: 0x" << padRegister(AF); output << "  BC: 0x" << padRegister(BC);
+		output << "  DE: 0x" << padRegister(DE); output << "  HL: 0x" << padRegister(HL) << "\n";
 
-	output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
+		output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
+	}
 
 	// I need to have a copy of the PC 
 	std::uint16_t PC_copy = PC;
@@ -102,8 +105,7 @@ std::string CPU::stepCPU(int log) {
 
 	std::chrono::steady_clock::time_point stop_timer = std::chrono::high_resolution_clock::now();
 
-	std::chrono::microseconds duration_timer = std::chrono::duration_cast<std::chrono::microseconds>(stop_timer - start_timer);
-	printf("This step took %d micrsoseconds\n\n", (int)duration_timer.count());
+	printf("This step took %d micrsoseconds\n\n", (int)std::chrono::duration_cast<std::chrono::microseconds>(stop_timer - start_timer).count());
 
 	return output.str();
 }
@@ -164,7 +166,6 @@ void CPU::loadROM(char const* path)
 		memory.write(i, fileBuf[i]);
 	}
 
-	//std::cin.get();
 	delete[]fileBuf;
 	fclose(file); 
 

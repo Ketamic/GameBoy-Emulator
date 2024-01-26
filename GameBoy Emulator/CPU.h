@@ -17,7 +17,7 @@ class CPU
 {
 public:
 	void init(platform* plat);
-	std::string stepCPU(int flag);
+	std::string stepCPU(std::string flag);
 	void loadROM(char const* path);
 
 private:

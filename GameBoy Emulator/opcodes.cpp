@@ -176,10 +176,7 @@ void CPU::op_0x2E() {
 
 // LD, A
 void CPU::op_0x3E() {
-	printf("VALUE OF A IS 0x%X BEFORE CHANGING", A);
 	A = GetImmediateOperand();
-	printf("VALUE OF A IS 0x%X AFTER CHANGING", A);
-
 }
 
 //LD, B - Load the 8-bit immediate operand d8 into register B.

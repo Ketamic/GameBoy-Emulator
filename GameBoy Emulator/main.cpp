@@ -42,12 +42,11 @@ int main(int argc, char* argv[]) {
 
 	std::ofstream logging_file;
 
-	std::string n;
-	printf("Would you like to log to a file? (y/n) ");
-	std::cin >> n;
-	bool logging_flag = (n == "y");
+	std::string logging_type;
+	printf("How you like to log the results? (l/p/n) ");
+	std::cin >> logging_type;
 
-	if (logging_flag) {
+	if (logging_type == "l") {
 		logging_file.open("opcodes.log");
 
 		if (!logging_file.is_open()) {
@@ -69,11 +68,14 @@ int main(int argc, char* argv[]) {
 			quit = true;
 		}
 
-		if (logging_flag) {
-			logging_file <<	GBCPU->stepCPU(logging_flag) << std::flush;
+		if (logging_type == "l") {
+			logging_file <<	GBCPU->stepCPU(logging_type) << std::flush;
+		}
+		else if(logging_type == "p") {
+			printf("%s", GBCPU->stepCPU(logging_type).c_str());
 		}
 		else {
-			printf("%s", GBCPU->stepCPU(logging_flag).c_str());
+			GBCPU->stepCPU(logging_type);
 		}
 	}
 	
