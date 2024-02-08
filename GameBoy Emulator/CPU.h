@@ -126,6 +126,7 @@ private:
 	void op_0x3E();
 
 	void op_0x40();
+
 	void op_0x50();
 	void op_0x51();
 	void op_0x52();
@@ -136,6 +137,14 @@ private:
 	void op_0x57();
 
 	void op_0x60();
+	void op_0x61();
+	void op_0x62();
+	void op_0x63();
+	void op_0x64();
+	void op_0x65();
+	void op_0x66();
+	void op_0x67();
+
 	void op_0x70();
 
 	//JR

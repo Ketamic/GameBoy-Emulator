@@ -236,6 +236,41 @@ void CPU::op_0x60() {
 	H = B;
 }
 
+//LD H, C - Load the contents of register C into register H.
+void CPU::op_0x61() {
+	H = C;
+}
+
+//LD H, D - Load the contents of register D into register H.
+void CPU::op_0x62() {
+	H = D;
+}
+
+//LD H, E - Load the contents of register E into register H.
+void CPU::op_0x63() {
+	H = E;
+}
+
+//LD H, H - Load the contents of register H into register H.
+void CPU::op_0x64() {
+	H = H;
+}
+
+//LD H, L - Load the contents of register L into register H.
+void CPU::op_0x65() {
+	H = L;
+}
+
+//LD H, B - Load the contents of register B into register H.
+void CPU::op_0x66() {
+	H = B;
+}
+
+//LD H, (HL) - Load the 8-bit contents of memory specified by register pair HL into register H.
+void CPU::op_0x67() {
+	H = memory.read(HL);
+}
+
 //LD (HL), B - Store the contents of register B in the memory location specified by register pair HL.
 void CPU::op_0x70() {
 	memory.write(HL, B);
@@ -688,6 +723,14 @@ void CPU::init_opcodes() {
 	Opcodes[0x57] = &CPU::op_0x57;
 
 	Opcodes[0x60] = &CPU::op_0x60;
+	Opcodes[0x61] = &CPU::op_0x61;
+	Opcodes[0x62] = &CPU::op_0x62;
+	Opcodes[0x63] = &CPU::op_0x63;
+	Opcodes[0x64] = &CPU::op_0x64;
+	Opcodes[0x65] = &CPU::op_0x65;
+	Opcodes[0x66] = &CPU::op_0x66;
+	Opcodes[0x67] = &CPU::op_0x67;
+
 	Opcodes[0x70] = &CPU::op_0x70;
 
 	// JR
