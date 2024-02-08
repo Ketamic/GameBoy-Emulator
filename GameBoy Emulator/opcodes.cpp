@@ -35,6 +35,8 @@ std::uint8_t CPU::GetImmediateOperand() {
 void CPU::InvalidOpcode() {
 	memory.DumpMemory("memdump.log");
 
+	std::printf("\nThe PC is 0x%X", PC);
+
 	throw std::runtime_error("Opcode is Unimplemented or does not exist");
 }
 
@@ -189,12 +191,47 @@ void CPU::op_0x40() {
 	//B = B; // This operation keeps B the same
 }
 
-//LD D, B - Load the contents of register B into register B.
+//LD D, B - Load the contents of register B into register D.
 void CPU::op_0x50() {
 	D = B;
 }
 
-//LD H, B - Load the contents of register B into register B.
+//LD D, C - Load the contents of register C into register D.
+void CPU::op_0x51() {
+	D = C;
+}
+
+//LD D, D - Load the contents of register D into register D.
+void CPU::op_0x52() {
+	D = D;
+}
+
+//LD D, E - Load the contents of register D into register D.
+void CPU::op_0x53() {
+	D = E;
+}
+
+//LD D, H - Load the contents of register H into register D.
+void CPU::op_0x54() {
+	D = H;
+}
+
+//LD D, L - Load the contents of register L into register D.
+void CPU::op_0x55() {
+	D = L;
+}
+
+//LD D, (HL) - Load the 8-bit contents of memory specified by register pair HL into register D.
+void CPU::op_0x56() {
+	D = memory.read(HL);
+}
+
+//LD D, L - Load the contents of register A into register D.
+void CPU::op_0x57() {
+	D = A;
+}
+
+//LD H, B - Load the contents of register B into register H.
 void CPU::op_0x60() {
 	H = B;
 }
@@ -640,7 +677,16 @@ void CPU::init_opcodes() {
 	Opcodes[0xC3] = &CPU::op_0xC3;
 
 	Opcodes[0x40] = &CPU::op_0x40;
+
 	Opcodes[0x50] = &CPU::op_0x50;
+	Opcodes[0x51] = &CPU::op_0x51;
+	Opcodes[0x52] = &CPU::op_0x52;
+	Opcodes[0x53] = &CPU::op_0x53;
+	Opcodes[0x54] = &CPU::op_0x54;
+	Opcodes[0x55] = &CPU::op_0x55;
+	Opcodes[0x56] = &CPU::op_0x56;
+	Opcodes[0x57] = &CPU::op_0x57;
+
 	Opcodes[0x60] = &CPU::op_0x60;
 	Opcodes[0x70] = &CPU::op_0x70;
 

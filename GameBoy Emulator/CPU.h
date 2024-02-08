@@ -127,6 +127,14 @@ private:
 
 	void op_0x40();
 	void op_0x50();
+	void op_0x51();
+	void op_0x52();
+	void op_0x53();
+	void op_0x54();
+	void op_0x55();
+	void op_0x56();
+	void op_0x57();
+
 	void op_0x60();
 	void op_0x70();
 

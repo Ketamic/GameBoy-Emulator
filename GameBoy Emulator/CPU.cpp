@@ -103,9 +103,8 @@ std::string CPU::stepCPU(std::string log) {
 	// Increment Program Counter so the CPU keeps moving foward
 	++PC;
 
-	std::chrono::steady_clock::time_point stop_timer = std::chrono::high_resolution_clock::now();
-
-	printf("This step took %d micrsoseconds\n\n", (int)std::chrono::duration_cast<std::chrono::microseconds>(stop_timer - start_timer).count());
+	// Counting how long each step took
+	printf("This step took %d micrsoseconds\n\n", (int)std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start_timer).count());
 
 	return output.str();
 }

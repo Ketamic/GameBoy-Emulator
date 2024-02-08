@@ -53,9 +53,28 @@
     <ClInclude Include="platform.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="opcodes16.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="SDL2\lib\x64\SDL2.lib" />
     <Library Include="SDL2\lib\x64\SDL2main.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dmg_rom.bin">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Tetris (World) (Rev 1).gb">
+      <Filter>Resource Files</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="memdump.log">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="opcodes.log">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>
