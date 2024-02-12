@@ -126,6 +126,13 @@ private:
 	void op_0x3E();
 
 	void op_0x40();
+	void op_0x41();
+	void op_0x42();
+	void op_0x43();
+	void op_0x44();
+	void op_0x45();
+	void op_0x46();
+	void op_0x47();
 
 	void op_0x50();
 	void op_0x51();

@@ -188,7 +188,42 @@ void CPU::op_0x06() {
 
 //LD B, B - Load the contents of register B into register B.
 void CPU::op_0x40() {
-	//B = B; // This operation keeps B the same
+	B = B; // This operation keeps B the same
+}
+
+//LD B, B - Load the contents of register C into register B.
+void CPU::op_0x41() {
+	B = C; 
+}
+
+//LD B, B - Load the contents of register D into register B.
+void CPU::op_0x42() {
+	B = D; 
+}
+
+//LD B, B - Load the contents of register E into register B.
+void CPU::op_0x43() {
+	B = E;
+}
+
+//LD B, B - Load the contents of register H into register B.
+void CPU::op_0x44() {
+	B = H; 
+}
+
+//LD B, B - Load the contents of register L into register B.
+void CPU::op_0x45() {
+	B = L;
+}
+
+//LD B, B - Load the contents of memory specified by register pair HL into register B.
+void CPU::op_0x46() {
+	B = memory.read(HL);
+}
+
+//LD B, B - Load the contents of register A into register B.
+void CPU::op_0x47() {
+	B = A;
 }
 
 //LD D, B - Load the contents of register B into register D.
@@ -712,6 +747,13 @@ void CPU::init_opcodes() {
 	Opcodes[0xC3] = &CPU::op_0xC3;
 
 	Opcodes[0x40] = &CPU::op_0x40;
+	Opcodes[0x41] = &CPU::op_0x41;
+	Opcodes[0x42] = &CPU::op_0x42;
+	Opcodes[0x43] = &CPU::op_0x43;
+	Opcodes[0x44] = &CPU::op_0x44;
+	Opcodes[0x45] = &CPU::op_0x45;
+	Opcodes[0x46] = &CPU::op_0x46;
+	Opcodes[0x47] = &CPU::op_0x47;
 
 	Opcodes[0x50] = &CPU::op_0x50;
 	Opcodes[0x51] = &CPU::op_0x51;
