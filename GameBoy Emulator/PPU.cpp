@@ -48,5 +48,6 @@ void PPU::StepPPU(int cycles) {
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {
 		// After a certain amount of cycles
 		memory->write(0xFF44, (memory->read(0xFF44) + 1) % 153);
+		CPUCycleAmount %= LCD_VERT_LINES;
 	}
 }
