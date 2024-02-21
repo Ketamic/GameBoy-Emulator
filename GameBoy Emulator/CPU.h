@@ -188,6 +188,9 @@ private:
 	void op_0x23();
 	void op_0x33();
 
+	// SUB
+	//void op_0x90();
+
 	// DEC
 	void op_0x0D();
 	void op_0x1D();

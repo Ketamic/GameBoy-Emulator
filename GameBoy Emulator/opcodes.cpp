@@ -420,6 +420,13 @@ void CPU::op_0x33() {
 	++SP;
 }
 
+// SUB
+
+// Subtract the contents of register B from the contents of register A, and store the results in register A.
+//void CPU::op_0x90() {
+
+//}
+
 // DEC
 
 // DEC C - Decrement the contents of register C by 1
@@ -803,6 +810,8 @@ void CPU::init_opcodes() {
 	Opcodes[0x25] = &CPU::op_0x25;
 	Opcodes[0x35] = &CPU::op_0x35; */
 
+	// SUB
+	//Opcodes[0x90] = &CPU::op_0x90;
 
 	// DEC
 	Opcodes[0x0D] = &CPU::op_0x0D;

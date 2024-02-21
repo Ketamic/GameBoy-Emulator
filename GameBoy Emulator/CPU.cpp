@@ -26,6 +26,7 @@ std::uint8_t CPU::SetBit(std::uint8_t number, int n, int x) {
 	return number ^ (-x ^ number) & (1UL << n);
 }
 
+// These two functions are obscenely slow - I haven't quite figured out how to fix it yet
 std::string padRegister(std::uint16_t value) {
 	std::stringstream formatted;
 	formatted << std::uppercase << std::hex << std::setw(4) << std::setfill('0') << value;
