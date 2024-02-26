@@ -61,6 +61,10 @@ void PPU::OutputTiles() {
 	}
 }
 
+/*
+* If the LY Register (0xFF44) is greater than 144 PPU is in vblank
+*/
+
 // Steps the PPU
 void PPU::StepPPU(int cycles) {
 	CPUCycleAmount += cycles;

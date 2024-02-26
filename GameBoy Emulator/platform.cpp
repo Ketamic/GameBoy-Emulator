@@ -79,7 +79,7 @@ void platform::StepSDL() {
         // This sets the value of RenderedScreenArray to ScreenArray so we know what screen is rendered
         memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
 
-        // Setting ScreenArray to 0 so it can be written to again by the program
+        // Setting ScreenArray to white so it can be written to again by the program
         memset(ScreenArray, 0xFFFFFFFF, sizeof(ScreenArray));
 
         SDL_RenderClear(renderer);
