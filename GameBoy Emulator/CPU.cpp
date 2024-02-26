@@ -61,6 +61,8 @@ uint8_t Opcode_Cycles[0x100] = {
 
 std::string CPU::stepCPU(std::string log) {
 
+	printf("LCDC Bit 4: %d", GetBit(memory.read(0xFF40), 4));
+
 	// starting my timer
 	std::chrono::steady_clock::time_point start_timer = std::chrono::high_resolution_clock::now();
 
@@ -91,6 +93,7 @@ std::string CPU::stepCPU(std::string log) {
 
 		output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
 	}
+
 
 	// I need to have a copy of the PC 
 	std::uint16_t PC_copy = PC;

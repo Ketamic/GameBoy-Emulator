@@ -33,6 +33,5 @@ public:
 	// Getters and Setters for ScreenArray
 	void SetScreenArray(int i, int j, uint32_t value);
 	uint32_t GetScreenArray(int i, int j);
-
 };
 

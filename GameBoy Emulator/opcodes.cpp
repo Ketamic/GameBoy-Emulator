@@ -30,10 +30,22 @@ std::uint8_t CPU::GetImmediateOperand() {
 	++PC; // Keeps from reading immedate operand once the opcode is done
 	return memory.read(PC);
 }
+void DumpBGMaps(Memory memory) {
+	printf("9800 BG Map");
+	for (int i = 0; i < 1024; ++i) {
+		if (i % 32 == 0) {
+			printf("\n");
+		}
+		printf("0x%X ", memory.read(0x9800 + i));
+	}
+}
+
 
 // Error Opcode - Throws an error if this opcode is called
 void CPU::InvalidOpcode() {
 	memory.DumpMemory("memdump.log");
+
+	DumpBGMaps(memory);
 
 	std::printf("\nThe PC is 0x%X", PC);
 

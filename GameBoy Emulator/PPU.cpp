@@ -9,6 +9,25 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 	plat = nplat;
 }
 
+void PPU::OutputTile(int x, int y, int tile_number) {
+	for (int i = 0; i < 0x10; i += 2) {
+		// 0x8800 addressing method
+		//std::uint8_t mem = memory->read(0x9000 + (tile_number * 0x10));
+
+		// 0x8000 addressing method
+		std::uint8_t mem = memory->read(0x8000 + (tile_number * 0x10));
+
+		for (int j = 0; j < 8; ++j) {
+			if (((mem >> j) & 1U) == 1) {
+				plat->SetScreenArray((8 - j) + x, (i / 2) + y, 0xFF000000);
+			}
+			else {
+				plat->SetScreenArray((8 - j) + x, (i / 2) + y, 0xFFFFFFFF);
+			}
+		}
+	}
+}
+
 // Just spits out all the tiles in VRAM to the screen
 // More of a testing feature than a useful one
 void PPU::OutputTiles() {

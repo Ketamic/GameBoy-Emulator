@@ -13,4 +13,5 @@ private:
 	platform* plat;
 
 	void OutputTiles();
+	void OutputTile(int x, int y, int TileNumber);
 };
