@@ -15,7 +15,7 @@ void PPU::OutputTile(int x, int y, int tile_number) {
 		//std::uint8_t mem = memory->read(0x9000 + (tile_number * 0x10));
 
 		// 0x8000 addressing method
-		std::uint8_t mem = memory->read(0x8000 + (tile_number * 0x10));
+		std::uint8_t mem = memory->read(0x8000 + (tile_number * 0x10) + i);
 
 		for (int j = 0; j < 8; ++j) {
 			if (((mem >> j) & 1U) == 1) {
@@ -67,6 +67,14 @@ void PPU::OutputTiles() {
 
 // Steps the PPU
 void PPU::StepPPU(int cycles) {
+
+	for (int i = 0; i < 0xC; ++i) {
+		OutputTile(20 + (i * 8), 20, i);
+	} 
+	for (int i = 0; i < 0xC; ++i) {
+		OutputTile(20 + (i * 8), 28, i + 0xC);
+	}
+
 	CPUCycleAmount += cycles;
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {
 		// After a certain amount of cycles

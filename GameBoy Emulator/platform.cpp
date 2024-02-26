@@ -65,6 +65,7 @@ void platform::SetupScreen() {
     }
 
     SDL_UpdateTexture(screen_texture, NULL, mem_buffer, LCD_WIDTH * sizeof(uint32_t));
+
 }
 
 void platform::StepSDL() {
