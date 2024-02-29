@@ -70,12 +70,25 @@ void PPU::StepPPU(int cycles) {
 
 	// 7 x 32
 
+	/* 
 	for (int i = 0; i < 0x12; ++i) {
 		OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i));
 	} 
 	for (int i = 0; i < 0x10; ++i) {
 		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i));
 	}
+	*/
+
+	int y = -1;
+	// Reading the Background Map onto the LCD
+	for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
+		if ((LCD_WIDTH / 8) % 8 == 0) {
+			++y;
+		}
+
+		OutputTile(i * 8, y * 8, memory->read(9800 + i));
+	}
+
 
 	CPUCycleAmount += cycles;
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {
