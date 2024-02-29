@@ -56,6 +56,7 @@ void platform::destroy() {
 // Draws all of the rectangles from the ScreenArray with the correct color
 // Doesn't feel very optmized but i'll look at it later if it becomes an issue
 void platform::SetupScreen() {
+
     uint32_t* mem_buffer = new uint32_t[LCD_WIDTH * LCD_HEIGHT];
 
     for (int i = 0; i < LCD_HEIGHT; ++i) {

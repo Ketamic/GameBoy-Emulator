@@ -31,6 +31,7 @@ std::uint8_t CPU::GetImmediateOperand() {
 	return memory.read(PC);
 }
 void DumpBGMaps(Memory memory) {
+
 	printf("9800 BG Map");
 	for (int i = 0; i < 1024; ++i) {
 		if (i % 32 == 0) {

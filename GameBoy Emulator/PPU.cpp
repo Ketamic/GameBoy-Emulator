@@ -68,11 +68,13 @@ void PPU::OutputTiles() {
 // Steps the PPU
 void PPU::StepPPU(int cycles) {
 
-	for (int i = 0; i < 0xC; ++i) {
-		OutputTile(20 + (i * 8), 20, i);
+	// 7 x 32
+
+	for (int i = 0; i < 0x12; ++i) {
+		OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i));
 	} 
-	for (int i = 0; i < 0xC; ++i) {
-		OutputTile(20 + (i * 8), 28, i + 0xC);
+	for (int i = 0; i < 0x10; ++i) {
+		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i));
 	}
 
 	CPUCycleAmount += cycles;
