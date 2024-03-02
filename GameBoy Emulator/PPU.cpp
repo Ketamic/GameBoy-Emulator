@@ -79,14 +79,20 @@ void PPU::StepPPU(int cycles) {
 	}
 	*/
 
+	// Have to start at -1 becuase % 0 is always zero and we want to be on row
+	// 0 when we start drawing to the screen
 	int y = -1;
+
 	// Reading the Background Map onto the LCD
 	for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
 		if ((LCD_WIDTH / 8) % 8 == 0) {
 			++y;
 		}
 
-		OutputTile(i * 8, y * 8, memory->read(9800 + i));
+		OutputTile(i * 8, y * 8, 
+			memory->read(0x9800 + i + 
+				(((memory->read(
+					0xFF42) + 143) % 256) * 32)));
 	}
 
 
