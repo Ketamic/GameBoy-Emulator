@@ -7,6 +7,7 @@
 void PPU::init(Memory* nmemory, platform* nplat) {
 	memory = nmemory;
 	plat = nplat;
+
 }
 
 void PPU::OutputTile(int x, int y, int tile_number) {
@@ -84,16 +85,33 @@ void PPU::StepPPU(int cycles) {
 	int y = -1;
 
 	// Reading the Background Map onto the LCD
+	// Wrapping the screen does not work currently
 	for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
 		if ((LCD_WIDTH / 8) % 8 == 0) {
 			++y;
 		}
 
-		OutputTile(i * 8, y * 8, 
-			memory->read(0x9800 + i + 
-				(((memory->read(
-					0xFF42) + 143) % 256) * 32)));
+		//printf("\nx: %d\ny: %d\nTile Number: %X", i * 8, y * 8, memory->read(0x9800 + i + (((memory->read(0xFF42) + 143) % 256) * 32)));
+
+		/*
+		* Equation for bottom coordinate is (SCY + 143) % 256
+		* Equation for right coordinate is (SCX + 159) % 256
+		* 
+		* LCD height is 144
+		* LCD width is 160
+		* 
+		* The LCD can fit 20 x 18 tiles
+		* 
+		* Background Map is 32 x 32
+		* Each Tile is 8x8
+		*/
+
+
+
+		OutputTile((i * 8) % LCD_WIDTH, y * 8, );
 	}
+
+	printf("\nFF42: %X\n, Tile_Number 12: %X", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256) * 32)));
 
 
 	CPUCycleAmount += cycles;
