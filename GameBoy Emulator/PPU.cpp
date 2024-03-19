@@ -108,7 +108,7 @@ void PPU::StepPPU(int cycles) {
 
 
 
-		OutputTile((i * 8) % LCD_WIDTH, y * 8, memory->read(0x9800));
+		OutputTile((i * 8) % LCD_WIDTH, y * 8, memory->read(0x9800 + ((memory->read(0xFF42) + 143) % 256) * 32));
 	}
 
 	printf("\nFF42: %X\n, Tile_Number 12: %X", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256) * 32)));
