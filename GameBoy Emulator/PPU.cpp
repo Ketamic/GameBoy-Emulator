@@ -94,6 +94,8 @@ void PPU::StepPPU(int cycles) {
 		//printf("\nx: %d\ny: %d\nTile Number: %X", i * 8, y * 8, memory->read(0x9800 + i + (((memory->read(0xFF42) + 143) % 256) * 32)));
 
 		/*
+		* SCY = 0xFF42
+		* SCX = 0xFF43
 		* Equation for bottom coordinate is (SCY + 143) % 256
 		* Equation for right coordinate is (SCX + 159) % 256
 		* 
@@ -108,10 +110,17 @@ void PPU::StepPPU(int cycles) {
 
 
 
-		OutputTile((i * 8) % LCD_WIDTH, y * 8, );
+		//OutputTile((i * 8) % LCD_WIDTH, y * 8, );
 	}
 
-	printf("\nFF42: %X\n, Tile_Number 12: %X", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256) * 32)));
+	// 230
+	// * 32
+	//if (memory->read(0xFF42) != 0) {
+	//	scy_reg.push_back(memory->read(0xFF42));
+	//}
+
+	printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
+	//printf("\nFF42: %X\n Tile_Number 12: %X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
 
 
 	CPUCycleAmount += cycles;
@@ -119,5 +128,9 @@ void PPU::StepPPU(int cycles) {
 		// After a certain amount of cycles
 		memory->write(0xFF44, (memory->read(0xFF44) + 1) % 153);
 		CPUCycleAmount %= LCD_VERT_LINES;
+	}
+	printf("\nSCY History: ");
+	for (int i = 0; i < scy_reg.size(); ++i) {
+		printf("0x%X, ", scy_reg[i]);
 	}
 }

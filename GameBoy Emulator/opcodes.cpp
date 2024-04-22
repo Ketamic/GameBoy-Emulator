@@ -30,6 +30,7 @@ std::uint8_t CPU::GetImmediateOperand() {
 	++PC; // Keeps from reading immedate operand once the opcode is done
 	return memory.read(PC);
 }
+
 void DumpBGMaps(Memory memory) {
 
 	printf("9800 BG Map");
@@ -309,15 +310,16 @@ void CPU::op_0x65() {
 	H = L;
 }
 
-//LD H, B - Load the contents of register B into register H.
-void CPU::op_0x66() {
-	H = B;
-}
-
 //LD H, (HL) - Load the 8-bit contents of memory specified by register pair HL into register H.
-void CPU::op_0x67() {
+void CPU::op_0x66() {
 	H = memory.read(HL);
 }
+
+//LD H, A - Load the contents of register A into register H.
+void CPU::op_0x67() {
+	H = A;
+}
+
 
 //LD (HL), B - Store the contents of register B in the memory location specified by register pair HL.
 void CPU::op_0x70() {

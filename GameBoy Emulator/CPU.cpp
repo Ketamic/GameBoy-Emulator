@@ -92,6 +92,8 @@ std::string CPU::stepCPU(std::string log) {
 		output << "  DE: 0x" << padRegister(DE); output << "  HL: 0x" << padRegister(HL) << "\n";
 
 		output << "CARRY: " << +F.CARRY_FLAG << " HALF-CARRY: " << +F.HALF_CARRY_FLAG << " SUBTRACT: " << +F.SUBTRACT_FLAG << " ZERO: " << +F.ZERO_FLAG << "\n";
+
+		output << "SCY Flag: " << std::hex << memory.read(0xFF42) << "\n";
 	}
 
 
