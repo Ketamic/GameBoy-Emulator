@@ -126,10 +126,10 @@ void PPU::StepPPU(int cycles) {
 	CPUCycleAmount += cycles;
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {
 		// After a certain amount of cycles
-		memory->write(0xFF44, (memory->read(0xFF44) + 1) % 153);
-		CPUCycleAmount %= LCD_VERT_LINES;
+		memory->write(0xFF44, (memory->read(0xFF44) + 1) % LCD_VERT_LINES);
+		CPUCycleAmount -= LCD_VERT_LINES;
 	}
-	printf("\nSCY History: ");
+
 	for (int i = 0; i < scy_reg.size(); ++i) {
 		printf("0x%X, ", scy_reg[i]);
 	}

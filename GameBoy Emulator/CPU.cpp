@@ -103,9 +103,11 @@ std::string CPU::stepCPU(std::string log) {
 	// Running opcode from table
 	(this->*Opcodes[memory.read(PC)])();
 
-	// Running PPU
-	ppu.StepPPU(Opcode_Cycles[PC_copy]);
-
+	// Checking if the LCD/PPU disable is set
+	if (GetBit(memory.read(0xFF40), 7)) {
+		// Running PPU
+		ppu.StepPPU(Opcode_Cycles[PC_copy]);
+	}
 	// Increment Program Counter so the CPU keeps moving foward
 	++PC;
 
