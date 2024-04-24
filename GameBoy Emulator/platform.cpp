@@ -39,6 +39,11 @@ void platform::init() {
 }
 
 void platform::SetScreenArray(int i, int j, uint32_t value) {
+    // if trying to set a value to the screen array out of the bounds it will simply ignore it, allowing me to do pixel by pixel
+    if (i > LCD_WIDTH - 1 || i < 0 || j > LCD_HEIGHT - 1 || j < 0) {
+
+        return;
+    }
     ScreenArray[i][j] = value;
 }
 
