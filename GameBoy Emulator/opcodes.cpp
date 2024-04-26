@@ -694,8 +694,8 @@ void CPU::op_0xFE() {
 	std::uint8_t NN = (A - d8);
 	F.ZERO_FLAG = (NN == 0x00);
 	F.SUBTRACT_FLAG = 1;
-	F.HALF_CARRY_FLAG = (A ^ d8 ^ NN) & 0x10 ? 1 : 0;
-	F.CARRY_FLAG = (NN & 0xFF00) ? 1 : 0;
+	F.HALF_CARRY_FLAG = ((d8 & 0x0F) > (A & 0x0F));
+	F.CARRY_FLAG = (d8 > A);
 }
 
 // RL
