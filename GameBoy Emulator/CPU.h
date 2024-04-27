@@ -154,6 +154,8 @@ private:
 
 	void op_0x70();
 
+	void op_0x90();
+
 	//JR
 	void op_0x20();
 

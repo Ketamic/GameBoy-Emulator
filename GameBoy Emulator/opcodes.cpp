@@ -438,13 +438,12 @@ void CPU::op_0x33() {
 // SUB
 
 // Subtract the contents of register B from the contents of register A, and store the results in register A.
-//void CPU::op_0x90() {
+void CPU::op_0x90() {
+	uint8_t NN = A - B;
+	F.ZERO_FLAG = (A == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((NN & 0x0F) > (A & 0x0F)); F.CARRY_FLAG = (NN > A);
+	A = NN;
+}
 
-//}
-
-// DEC
-
-// DEC C - Decrement the contents of register C by 1
 void CPU::op_0x0D() {
 	--C;
 	F.ZERO_FLAG = (C == 0x00); F.SUBTRACT_FLAG = 1; F.HALF_CARRY_FLAG = ((C & 0x0F) == 0x00);
@@ -826,7 +825,7 @@ void CPU::init_opcodes() {
 	Opcodes[0x35] = &CPU::op_0x35; */
 
 	// SUB
-	//Opcodes[0x90] = &CPU::op_0x90;
+	Opcodes[0x90] = &CPU::op_0x90;
 
 	// DEC
 	Opcodes[0x0D] = &CPU::op_0x0D;
