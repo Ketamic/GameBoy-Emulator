@@ -15,6 +15,4 @@ private:
 
 	void OutputTiles();
 	void OutputTile(int x, int y, int tile_number);
-
-	std::vector<int> scy_reg;
 };

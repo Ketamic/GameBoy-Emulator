@@ -108,16 +108,25 @@ void PPU::StepPPU(int cycles) {
 		* Each Tile is 8x8
 		*/
 
+		/*
+		* EXAMPLE:
+		* 
+		* SCY = 56
+		* Getting y-offset
+		* (SCY + 143) & 256 = 199
+		* Figuring out which row of the table to read from:
+		* 199 / 32 = 6.21875
+		* 199 >> 5
+		* Truncate 6.21875 to 6
+		* 6 rows up
+		* 199 % 32 % 8 = 7
+		* 7 Pixel offset
+		* 
+		*/
 
 
 		//OutputTile((i * 8) % LCD_WIDTH, y * 8, );
 	}
-
-	// 230
-	// * 32
-	//if (memory->read(0xFF42) != 0) {
-	//	scy_reg.push_back(memory->read(0xFF42));
-	//}
 
 	printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
 	//printf("\nFF42: %X\n Tile_Number 12: %X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
@@ -125,12 +134,8 @@ void PPU::StepPPU(int cycles) {
 
 	CPUCycleAmount += cycles;
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {
-		// After a certain amount of cycles
+		// After a certain amount of cycles the LY increases or wraps back to zero
 		memory->write(0xFF44, (memory->read(0xFF44) + 1) % LCD_VERT_LINES);
 		CPUCycleAmount -= LCD_VERT_LINES;
-	}
-
-	for (int i = 0; i < scy_reg.size(); ++i) {
-		printf("0x%X, ", scy_reg[i]);
 	}
 }
