@@ -10,15 +10,15 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 
 }
 
-void PPU::OutputTile(int x, int y, int tile_number, int y_tile_offset) {
-	for (int i = 0; i < 0x10; i += 2) {
+void PPU::OutputTile(int x, int y, int tile_number, int bottom_offset = 0, int top_offset = 0x8, int left_offset = 8, int right_offset) {
+	for (int i = bottom_offset; i < (top_offset * 2); i += 2) {
 		// 0x8800 addressing method
 		//std::uint8_t mem = memory->read(0x9000 + (tile_number * 0x10));
 
 		// 0x8000 addressing method
 		std::uint8_t mem = memory->read(0x8000 + (tile_number * 0x10) + i);
 
-		for (int j = 0; j < 8; ++j) {
+		for (int j = right_offset; j < left_offset; ++j) {
 			if (((mem >> j) & 1U) == 1) {
 				plat->SetScreenArray((8 - j) + x, (i / 2) + y, 0xFF000000);
 			}
@@ -71,14 +71,14 @@ void PPU::StepPPU(int cycles) {
 
 	// 7 x 32
 
-	/* 
+	
 	for (int i = 0; i < 0x12; ++i) {
-		OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i));
+		OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i), 4);
 	} 
 	for (int i = 0; i < 0x10; ++i) {
-		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i));
+		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i), 4);
 	}
-	*/
+	
 
 	// Have to start at -1 becuase % 0 is always zero and we want to be on row
 	// 0 when we start drawing to the screen
