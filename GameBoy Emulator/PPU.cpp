@@ -10,8 +10,8 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 
 }
 
-void PPU::OutputTile(int x, int y, int tile_number, int bottom_offset = 0, int top_offset = 0x8, int left_offset = 8, int right_offset) {
-	for (int i = bottom_offset; i < (top_offset * 2); i += 2) {
+void PPU::OutputTile(int x, int y, int tile_number) {
+	for (int i = 0; i < 0x10; i += 2) {
 		// 0x8800 addressing method
 		//std::uint8_t mem = memory->read(0x9000 + (tile_number * 0x10));
 
@@ -125,11 +125,12 @@ void PPU::StepPPU(int cycles) {
 		*/
 
 
-		//OutputTile((i * 8) % LCD_WIDTH, y * 8, memory->read(0x9800 + (ROWOFFSET * 32) + i, PIXELOFFSET);
+		//OutputTile((i * 8) % LCD_WIDTH, y * 8, );
 	}
 
 	printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
 	//printf("\nFF42: %X\n Tile_Number 12: %X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
+
 
 	CPUCycleAmount += cycles;
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {

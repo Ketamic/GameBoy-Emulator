@@ -6,8 +6,7 @@ void platform::init() {
         printf("Failed to initialize the SDL2 library\n SDL Error: %s", SDL_GetError());
         throw std::logic_error("SDL2 Failed to initialize");
     }
-    
-    // Creating the Window
+
     window = SDL_CreateWindow("Gameboy Emulator", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, LCD_WIDTH * WINDOW_SIZE_MODIFIER, LCD_HEIGHT * WINDOW_SIZE_MODIFIER, 0);
 
     if (!window) {
@@ -15,7 +14,6 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed load window");
     }
 
-    // Creating the Renderer
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
    
     if (!renderer) {
@@ -23,7 +21,6 @@ void platform::init() {
         throw std::logic_error("SDL2 Failed to create renderer");
     }
 
-    // Creating the Screen Texture
     screen_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, LCD_WIDTH, LCD_HEIGHT);
 
     if (!screen_texture) {
