@@ -14,5 +14,5 @@ private:
 	platform* plat;
 
 	void OutputTiles();
-	void OutputTile(int x, int y, int tile_number, int bottom_offset = 0, int top_offset = 0x8, int left_offset = 8, int right_offset);
-}
+	void OutputTile(int x, int y, int tile_number, int right_offset = 0, int left_offset = 0x8, int bottom_offset = 0, int top_offset = 0x8);
+};

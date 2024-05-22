@@ -10,8 +10,9 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 
 }
 
-void PPU::OutputTile(int x, int y, int tile_number) {
-	for (int i = 0; i < 0x10; i += 2) {
+// Outputs the title chosen to the screen with the offset determined
+void PPU::OutputTile(int x, int y, int tile_number, int right_offset, int left_offset, int top_offset, int bottom_offset) {
+	for (int i = top_offset; i < bottom_offset * 2; i += 2) {
 		// 0x8800 addressing method
 		//std::uint8_t mem = memory->read(0x9000 + (tile_number * 0x10));
 
@@ -72,12 +73,12 @@ void PPU::StepPPU(int cycles) {
 	// 7 x 32
 
 	
-	for (int i = 0; i < 0x12; ++i) {
-		OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i), 4);
-	} 
-	for (int i = 0; i < 0x10; ++i) {
-		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i), 4);
-	}
+	//for (int i = 0; i < 0x12; ++i) {
+	//	OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i), 0, 0x8, 0, 0x8);
+	//} 
+	//for (int i = 0; i < 0x10; ++i) {
+	//	OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i), 0, 0x8, 0, 0x8);
+	//}
 	
 
 	// Have to start at -1 becuase % 0 is always zero and we want to be on row
@@ -87,10 +88,9 @@ void PPU::StepPPU(int cycles) {
 	// Reading the Background Map onto the LCD
 	// Wrapping the screen does not work currently
 	for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
-		if ((LCD_WIDTH / 8) % 8 == 0) {
+		if ((i * 8) % LCD_WIDTH == 0) {
 			++y;
 		}
-
 		//printf("\nx: %d\ny: %d\nTile Number: %X", i * 8, y * 8, memory->read(0x9800 + i + (((memory->read(0xFF42) + 143) % 256) * 32)));
 
 		/*
@@ -113,7 +113,7 @@ void PPU::StepPPU(int cycles) {
 		* 
 		* SCY = 56
 		* Getting y-offset
-		* (SCY + 143) & 256 = 199
+		* (SCY + 143) % 256 = 199
 		* Figuring out which row of the table to read from:
 		* 199 / 32 = 6.21875
 		* 199 >> 5
@@ -124,12 +124,24 @@ void PPU::StepPPU(int cycles) {
 		* 
 		*/
 
+		//int SCY = (memory->read(0xFF42) + 143) % 256;
+		int SCY = 192;
+		int ROW = SCY / 32;
+
+		int heightoffset = SCY % 32 % 8;
+
+		OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + ((ROW + y) * 32) + (i % 32)), 0, 8, 0, 0x8);
+		//OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + (8 * 32) + 5));
 
 		//OutputTile((i * 8) % LCD_WIDTH, y * 8, );
 	}
 
-	printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
-	//printf("\nFF42: %X\n Tile_Number 12: %X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
+	//plat->SetScreenArray(0, 0, 0xFF000000);	
+
+	OutputTile(0, 0, memory->read(0x9800 + (8 * 32) + 5));
+
+	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
+	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
 
 
 	CPUCycleAmount += cycles;
