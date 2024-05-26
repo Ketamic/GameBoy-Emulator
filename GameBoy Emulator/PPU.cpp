@@ -130,15 +130,14 @@ void PPU::StepPPU(int cycles) {
 
 		int heightoffset = SCY % 32 % 8;
 
-		OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + ((ROW + y) * 32) + (i % 32)), 0, 8, 0, 0x8);
+		OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + ((ROW + y) * 32) + (i % 32)));
 		//OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + (8 * 32) + 5));
+		//OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), i);
 
 		//OutputTile((i * 8) % LCD_WIDTH, y * 8, );
 	}
 
 	//plat->SetScreenArray(0, 0, 0xFF000000);	
-
-	OutputTile(0, 0, memory->read(0x9800 + (8 * 32) + 5));
 
 	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
 	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
