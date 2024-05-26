@@ -73,12 +73,12 @@ void PPU::StepPPU(int cycles) {
 	// 7 x 32
 
 	
-	//for (int i = 0; i < 0x12; ++i) {
-	//	OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i), 0, 0x8, 0, 0x8);
-	//} 
-	//for (int i = 0; i < 0x10; ++i) {
-	//	OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i), 0, 0x8, 0, 0x8);
-	//}
+	for (int i = 0; i < 0x12; ++i) {
+		OutputTile(20 + (i * 8), 20, memory->read(0x9800 + (8*32) + i));
+	} 
+	for (int i = 0; i < 0x10; ++i) {
+		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i));
+	}
 	
 
 	// Have to start at -1 becuase % 0 is always zero and we want to be on row
@@ -130,7 +130,7 @@ void PPU::StepPPU(int cycles) {
 
 		int heightoffset = SCY % 32 % 8;
 
-		OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + ((ROW + y) * 32) + (i % 32)));
+		OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + ((ROW + y) * 32) + (i % 20)));
 		//OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + (8 * 32) + 5));
 		//OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), i);
 
