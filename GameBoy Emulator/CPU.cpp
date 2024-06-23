@@ -97,8 +97,8 @@ std::string CPU::stepCPU(std::string log) {
 	}
 
 
-	// I need to have a copy of the PC 
-	std::uint16_t PC_copy = PC;
+	// I need to have a copy of the PC for the PPU
+	PC_copy = PC;
 
 	// Running opcode from table
 	(this->*Opcodes[memory.read(PC)])();

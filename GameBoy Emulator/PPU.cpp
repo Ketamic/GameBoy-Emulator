@@ -85,6 +85,12 @@ void PPU::StepPPU(int cycles) {
 	// 0 when we start drawing to the screen
 	int y = -1;
 
+	int SCY = (memory->read(0xFF42) + 143) % 256;
+	//int SCY = 218;
+	int ROW = SCY / 32;
+
+	int heightoffset = SCY % 32 % 8;
+
 	// Reading the Background Map onto the LCD
 	// Wrapping the screen does not work currently
 	for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
@@ -124,11 +130,6 @@ void PPU::StepPPU(int cycles) {
 		* 
 		*/
 
-		//int SCY = (memory->read(0xFF42) + 143) % 256;
-		int SCY = 192;
-		int ROW = SCY / 32;
-
-		int heightoffset = SCY % 32 % 8;
 
 		OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + ((ROW + y) * 32) + (i % 20)));
 		//OutputTile((i * 8) % LCD_WIDTH, heightoffset + (y * 8), memory->read(0x9800 + (8 * 32) + 5));
@@ -139,7 +140,7 @@ void PPU::StepPPU(int cycles) {
 
 	//plat->SetScreenArray(0, 0, 0xFF000000);	
 
-	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + (8 * 32) + 5));
+	printf("\nFF42: %X\n", memory->read(0xFF42));
 	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
 
 
