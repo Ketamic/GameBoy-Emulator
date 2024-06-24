@@ -96,7 +96,7 @@ void PPU::StepPPU(int cycles) {
 	for (int i = 0; i < (LCD_WIDTH / 8) * (LCD_HEIGHT / 8); ++i) {
 		if (i % 20 == 0) {
 			++y;
-			printf("\nROW %d:", (y % 32));
+			printf("\nROW %d:", (ROW + y));
 		}
 
 		printf(" %X ", memory->read(0x9800 + ((y % 32) * 32) + (i % 20)));
