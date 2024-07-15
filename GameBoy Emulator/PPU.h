@@ -15,4 +15,5 @@ private:
 
 	void OutputTiles();
 	void OutputTile(int x, int y, int tile_number, int right_offset = 0, int left_offset = 0x8, int bottom_offset = 0, int top_offset = 0x8);
+	void RenderScanLine();
 };

@@ -112,7 +112,7 @@ std::string CPU::stepCPU(std::string log) {
 	++PC;
 
 	// Counting how long each step took
-	printf("This step took %d micrsoseconds\n\n", (int)std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start_timer).count());
+	//printf("This step took %d micrsoseconds\n\n", (int)std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::high_resolution_clock::now() - start_timer).count());
 
 	//printf("LCDC BIT 4: %d", GetBit(memory.read(0xF440), 4));
 

@@ -90,7 +90,7 @@ void platform::StepSDL() {
         memcpy(RenderedScreenArray, ScreenArray, sizeof(RenderedScreenArray));
 
         // Setting ScreenArray to white so it can be written to again by the program
-        memset(ScreenArray, 0xFFFFFFFF, sizeof(ScreenArray));
+        //memset(ScreenArray, 0xFFFFFFFF, sizeof(ScreenArray));
 
         SDL_RenderClear(renderer);
         SDL_RenderCopy(renderer, screen_texture, NULL, NULL);

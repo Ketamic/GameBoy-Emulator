@@ -63,6 +63,10 @@ void PPU::OutputTiles() {
 	}
 }
 
+void PPU::RenderScanLine() {
+
+}
+
 /*
 * If the LY Register (0xFF44) is greater than 144 PPU is in vblank
 */
@@ -79,54 +83,8 @@ void PPU::StepPPU(int cycles) {
 	for (int i = 0; i < 0x10; ++i) {
 		OutputTile(20 + (i * 8), 28, memory->read(0x9800 + (9*32) + i));
 	}
+	
 	*/
-
-
-	//int SCY = (memory->read(0xFF42) + 143) % 256;
-	int SCY = 144;
-	int ROW = SCY / 8;
-
-	int heightoffset = SCY % 8;
-
-	int y = ROW + (LCD_HEIGHT / 8);
-
-	printf("LCD TILEMAP:");
-	// Reading the Background Map onto the LCD
-	// Wrapping the screen does not work currently
-	for (int i = 0; i < (LCD_WIDTH / 8) * (LCD_HEIGHT / 8); ++i) {
-		if (i % 20 == 0) {
-			++y;
-			printf("\nROW %d:", (y % 32));
-		}
-
-		printf(" %X ", memory->read(0x9800 + ((y % 32) * 32) + (i % 20)));
-	}
-
-	/*for (int i = 0; i < (LCD_WIDTH / 8) * (LCD_HEIGHT / 8); ++i) {
-		if (i % 20 == 0) {
-			--y;
-			printf("\nROW %d:", (y % 32));
-		}
-
-		printf(" %X ", (0x9800 + ((y % 32) * 32) + (i % 20)));
-	}*/
-
-	printf("\n\n9800 BG Map Tile Numbers");
-	for (int i = 0; i < 1024; ++i) {
-		if (i % 32 == 0) {
-			printf("\n");
-		}
-		printf("0x%X ", memory->read(0x9800 + i));
-	}
-
-	printf("\n\n9800 BG Map Numbers");
-	for (int i = 0; i < 1024; ++i) {
-		if (i % 32 == 0) {
-			printf("\n");
-		}
-		printf("%X ", (0x9800 + i));
-	}
-
 	/*for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
 		if ((i * 8) % LCD_WIDTH == 0) {
 			++y;
@@ -178,13 +136,12 @@ void PPU::StepPPU(int cycles) {
 
 	//plat->SetScreenArray(0, 0, 0xFF000000);	
 
-	printf("\nFF42: %X\n", memory->read(0xFF42));
 	//printf("\nFF42: %X\n Tile_Number 12: 0x%X\n", memory->read(0xFF42), memory->read(0x9800 + 12 + (((memory->read(0xFF42) + 143) % 256))));
 
 
 	CPUCycleAmount += cycles;
 	if (CPUCycleAmount >= LCD_VERT_CYCLES) {
-		// After a certain amount of cycles the LY increases or wraps back to zero
+		// After 456 cycles the LY increases or wraps back to zero
 		memory->write(0xFF44, (memory->read(0xFF44) + 1) % LCD_VERT_LINES);
 		CPUCycleAmount -= LCD_VERT_LINES;
 	}
