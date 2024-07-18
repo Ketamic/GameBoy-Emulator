@@ -11,6 +11,7 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 }
 
 // Outputs the title chosen to the screen with the offset determined
+// 0, 0 is top left of the screen
 void PPU::OutputTile(int x, int y, int tile_number, int right_offset, int left_offset, int top_offset, int bottom_offset) {
 	for (int i = top_offset; i < bottom_offset * 2; i += 2) {
 		// 0x8800 addressing method
@@ -160,7 +161,6 @@ void PPU::StepPPU(int cycles) {
 		memory->write(0xFF44, (memory->read(0xFF44) + 1) % LCD_VERT_LINES);
 		CPUCycleAmount -= LCD_VERT_LINES;
 
-		printf("\nSCY: 0x%X", memory->read(0xFF42));
 		/*
 		int y = -1;
 		for (int i = 0; i < 0x400; ++i) {
@@ -173,21 +173,21 @@ void PPU::StepPPU(int cycles) {
 		}
 		printf("\n\n"); */
 
-		std::uint8_t SCY = (memory->read(0xFF44) + 143) % 256 ;
+		std::uint8_t SCY = (memory->read(0xFF42) + 143) % 256 ;
 		std::uint8_t SCY_top = SCY - LCD_HEIGHT;
 		std::uint8_t top_row = SCY_top / 8;
 
-		printf("SCY_top: %X, top_row: %X", SCY_top, top_row);
+		printf("\nSCY: %X, SCY_top: %X, top_row: %X", SCY, SCY_top, top_row);
 
 		std::uint8_t y = -1;
-		for (int i = 0; i < LCD_WIDTH * LCD_HEIGHT / 64; ++i) {
-			if (i % 32 == 0) {
+		for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
+			if (i % 20 == 0) {
 				++y;
 				printf("\nROW %X: ", top_row + y);
 			}
-			printf("%X ", (0x9800 + ((top_row + y) * 32) + (i % 32)));
+			printf("%X ", memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
+			OutputTile((i % 20), y, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
 		}
-
 		printf("\n\n");
 	}
 }
