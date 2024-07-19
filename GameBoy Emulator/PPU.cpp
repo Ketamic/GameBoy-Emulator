@@ -13,14 +13,14 @@ void PPU::init(Memory* nmemory, platform* nplat) {
 // Outputs the title chosen to the screen with the offset determined
 // 0, 0 is top left of the screen
 void PPU::OutputTile(int x, int y, int tile_number, int right_offset, int left_offset, int top_offset, int bottom_offset) {
-	for (int i = top_offset; i < bottom_offset * 2; i += 2) {
+	for (int i = 0; i < 0x8 * 2; i += 2) {
 		// 0x8800 addressing method
 		//std::uint8_t mem = memory->read(0x9000 + (tile_number * 0x10));
 
 		// 0x8000 addressing method
 		std::uint8_t mem = memory->read(0x8000 + (tile_number * 0x10) + i);
 
-		for (int j = right_offset; j < left_offset; ++j) {
+		for (int j = 0; j < 0x8; ++j) {
 			if (((mem >> j) & 1U) == 1) {
 				plat->SetScreenArray((8 - j) + x, (i / 2) + y, 0xFF000000);
 			}
@@ -177,17 +177,19 @@ void PPU::StepPPU(int cycles) {
 		std::uint8_t SCY_top = SCY - LCD_HEIGHT;
 		std::uint8_t top_row = SCY_top / 8;
 
-		printf("\nSCY: %X, SCY_top: %X, top_row: %X", SCY, SCY_top, top_row);
+		//printf("\nSCY: %X, SCY_top: %X, top_row: %X", SCY, SCY_top, top_row);
 
 		std::uint8_t y = -1;
 		for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
 			if (i % 20 == 0) {
 				++y;
-				printf("\nROW %X: ", top_row + y);
+				//printf("\nROW %X: ", top_row + y);
 			}
-			printf("%X ", memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
-			OutputTile((i % 20), y, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
+			//printf("%X ", memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
+			//printf("x:%d,y:%d,%X ", (i % 20), y, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
+			
+			OutputTile((i % 20) * 8, y * 8, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
 		}
-		printf("\n\n");
+		//printf("\n\n");
 	}
 }
