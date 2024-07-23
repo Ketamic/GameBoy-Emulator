@@ -176,6 +176,7 @@ void PPU::StepPPU(int cycles) {
 		std::uint8_t SCY = (memory->read(0xFF42) + 143) % 256 ;
 		std::uint8_t SCY_top = SCY - LCD_HEIGHT;
 		std::uint8_t top_row = SCY_top / 8;
+		std::uint8_t height_offset = SCY_top % 8;
 
 		//printf("\nSCY: %X, SCY_top: %X, top_row: %X", SCY, SCY_top, top_row);
 
@@ -188,7 +189,7 @@ void PPU::StepPPU(int cycles) {
 			//printf("%X ", memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
 			//printf("x:%d,y:%d,%X ", (i % 20), y, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
 			
-			OutputTile((i % 20) * 8, y * 8, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
+			OutputTile((i % 20) * 8, (y * 8) - height_offset, memory->read(0x9800 + ((top_row + y) * 32) + (i % 20)));
 		}
 		//printf("\n\n");
 	}
