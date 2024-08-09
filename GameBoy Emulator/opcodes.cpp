@@ -170,10 +170,6 @@ void CPU::op_0x4F() {
 	C = A;
 }
 
-//LD (HL), d8
-void CPU::op_0x36() {
-	memory.write(HL, GetImmediateOperand());
-}
 
 //LD, C - Load the 8-bit immediate operand d8 into register C.
 void CPU::op_0x0E() {
@@ -195,10 +191,26 @@ void CPU::op_0x3E() {
 	A = GetImmediateOperand();
 }
 
-//LD, B - Load the 8-bit immediate operand d8 into register B.
+//LD B, d8 - Load the 8-bit immediate operand d8 into register B.
 void CPU::op_0x06() {
 	B = GetImmediateOperand();
 }
+
+//LD D, d8 - Load the 8-bit immediate operand d8 into register D.
+void CPU::op_0x16() {
+	D = GetImmediateOperand();
+}
+
+//LD H, d8 - Load the 8-bit immediate operand d8 into register H.
+void CPU::op_0x26() {
+	H = GetImmediateOperand();
+}
+
+//LD (HL), d8 - Load the 8-bit immediate operand d8 into the memory location specified by register pair HL.
+void CPU::op_0x36() {
+	memory.write(HL, GetImmediateOperand());
+}
+
 
 //LD B, B - Load the contents of register B into register B.
 void CPU::op_0x40() {
@@ -763,6 +775,9 @@ void CPU::init_opcodes() {
 	Opcodes[0x31] = &CPU::op_0x31;
 
 	Opcodes[0x4F] = &CPU::op_0x4F;
+
+	Opcodes[0x16] = &CPU::op_0x16;
+	Opcodes[0x26] = &CPU::op_0x26;
 	Opcodes[0x36] = &CPU::op_0x36;
 
 	Opcodes[0xC3] = &CPU::op_0xC3;
