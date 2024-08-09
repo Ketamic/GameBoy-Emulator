@@ -119,8 +119,6 @@ private:
 	void op_0x31();
 
 	void op_0x4F();
-	void op_0x36();
-
 	void op_0x0E();
 	void op_0x1E();
 	void op_0x2E();
@@ -165,6 +163,10 @@ private:
 	void op_0x38();
 
 	void op_0x06();
+	void op_0x16();
+	void op_0x26();
+	void op_0x36();
+
 	void op_0x08();
 	void op_0x09();
 	void op_0x0A();

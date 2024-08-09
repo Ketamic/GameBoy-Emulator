@@ -63,7 +63,7 @@ void platform::destroy() {
 // Doesn't feel very optmized but i'll look at it later if it becomes an issue
 void platform::SetupScreen() {
 
-    uint32_t* mem_buffer = new uint32_t[LCD_WIDTH * LCD_HEIGHT];
+    uint32_t mem_buffer[LCD_WIDTH * LCD_HEIGHT] = { };
 
     for (int i = 0; i < LCD_HEIGHT; ++i) {
         for (int j = 0; j < LCD_WIDTH; ++j) {
@@ -71,10 +71,13 @@ void platform::SetupScreen() {
         }
     }
 
-    SDL_UpdateTexture(screen_texture, NULL, mem_buffer, LCD_WIDTH * sizeof(uint32_t));
+    if (SDL_UpdateTexture(screen_texture, NULL, mem_buffer, LCD_WIDTH * sizeof(uint32_t)) != 0) {
+        printf("Failed to update screen texture: %s", SDL_GetError());
+        throw std::logic_error("SDL2 Failed to update the screen texture");
+    }
 
-    delete [] mem_buffer;
-    mem_buffer = NULL;
+    //delete [] mem_buffer;
+    //mem_buffer = NULL;
 }
 
 void platform::StepSDL() {

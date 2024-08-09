@@ -174,12 +174,12 @@ void PPU::StepPPU(int cycles) {
 		printf("\n\n"); */
 
 		std::uint8_t SCY = (memory->read(0xFF42) + 143) % 256 ;
-		std::uint8_t SCY_top = SCY - LCD_HEIGHT;
-		std::uint8_t top_row = SCY_top / 8;
+		int SCY_top = SCY - LCD_HEIGHT;
+		int top_row = SCY_top / 8;
 		std::uint8_t height_offset = SCY_top % 8;
 
 		//printf("\nSCY: %X, SCY_top: %X, top_row: %X", SCY, SCY_top, top_row);
-
+		printf("SCY: %d; SCY_top: %d; top_row: %d; height_offset: %d\n", SCY, SCY_top, top_row, height_offset);
 		std::uint8_t y = -1;
 		for (int i = 0; i < (LCD_WIDTH * LCD_HEIGHT) / 64; ++i) {
 			if (i % 20 == 0) {
